@@ -4,7 +4,7 @@ from . import views
 app_name = "base_app"
 
 urlpatterns = [
-#     path('', views.main_page, name="main_page"),
+    path('', views.base, name="base_app"),
 #     path('product<int:pk>', views.product, name="product"),
 #     path('category', views.category_main, name="category_main"),
 #     path('category/<int:pk>', views.category, name="category"),

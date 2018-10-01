@@ -40,6 +40,11 @@ class Restaurant(models.Model):
     longitude = models.CharField(max_length=20,)
     register = models.DateTimeField(auto_now_add=True, verbose_name='음식점 등록일',)
 
+    # 경도, 위도로 장소 자동추가
+    def locate(self):
+        locate = "{lat:" + self.latitude + ", lng:" + self.longitude + "}"
+        return locate
+
     class Meta:
         ordering = ['-id']
 
