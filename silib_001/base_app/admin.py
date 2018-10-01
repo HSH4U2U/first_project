@@ -8,11 +8,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ['dish_category', 'dish_name', 'dish_price']
+    list_display = ['category', 'name', 'price']
 
 @admin.register(Restaurant)
 class RestaurantAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'menu', 'open_to_close', 'is_package_possible', 'is_delivery_possible', 'is_eating_lonely_possible', 'detail', 'register']
+    list_display = ['name', 'category', 'menu', 'open_to_close', 'is_package_possible', 'is_delivery_possible', 'is_eating_lonely_possible', 'detail', 'latitude', 'longitude', 'register']
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
