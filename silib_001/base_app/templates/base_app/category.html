@@ -1,0 +1,17 @@
+{% extends "base_app/base.html" %}
+
+{% block content %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/category.css' %}">
+
+  <div class="restaurant_list">
+    {% for restaurant in restaurants %}
+      <div class="restaurant_set">
+        <div class="restaurant_image" style="background-color: lightgrey; width: 30px; height: 30px"></div>
+        <div class="restaurant_introduction">
+          <div>{{ restaurant }}</div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

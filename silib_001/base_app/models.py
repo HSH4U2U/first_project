@@ -5,6 +5,7 @@ from django.urls import reverse
 # Create your models here.
 class Category(models.Model):
     category_name = models.CharField(max_length=20, verbose_name='카테고리명',)
+    category_image = models.ImageField(blank=True, verbose_name='카테고리 사진',)
 
     def __str__(self):
         return self.category_name
