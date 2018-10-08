@@ -7,75 +7,137 @@
   <title>bld | 서울시립대 음식점</title>
   <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/base.css' %}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
-  </head>
+  <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/swiper.min.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+</head>
 <body>
-  <!--content-->
-  <div id="content">
-    <!--head-->
-    <div class="content_head">
-{#      <div class="logo"><img src="{% static 'base_app/images/logo2.png' %}" width="80"></div>#}
-      <div class="logo" style="font-size:30px;">bld</div>
-      <!-- 로그인 전
-      <div class="signup_mypage">Signup</div>
-      <div class="login_logout">Login</div>
-      -->
-      <!-- 로그인 후 -->
-      <div class="signup_mypage">Mypage</div>
-      <div class="login_logout">Logout</div>
 
-      <div class="shadow search"><img src="{% static 'base_app/images/search.png' %}" width="20"></div>
-    </div>
-
-    <!--mid-->
-    <div class="content_mid">
-      {% block content %}
-<!-- 첫 번째 페이지
-      <div class="notice_page">
-        같이 서울시립대학교를 위해<br/>
-        프로젝트 진행할 사람을 모집합니다.<br/>
-        <br/>
-        UX&UI디자인 한 분<br/>
-        안드로이드, IOS 앱 개발 한 분<br/>
-        <br/>
-        지원은 과거 진행하셨던 작업물을<br/>
-        메일(hsh700788@naver.com)로<br/>
-        보내주시면 됩니다.<br/>
-        <br/>
-        관심있는 분 편하게 연락주시면 됩니다.<br/>
+<!-- Swiper -->
+<div class="swiper-container">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide menu">
+      <div class="content_head">
+{#        <div class="logo"><img src="{% static 'base_app/images/logo2.png' %}" width="80"></div>#}
+        <div class="logo" style="font-size:30px;">bld</div>
+        <!-- 로그인 전
+        <div class="signup_mypage">Signup</div>
+        <div class="login_logout">Login</div>
+        -->
+        <!-- 로그인 후 -->
+        <div class="signup_mypage">Mypage</div>
+        <div class="login_logout">Logout</div>
       </div>
--->
 
-      <div class="main_page">
-        <div class="category_list">
-          {% for category in categorys %}
-            <a href="{% url "base_app:category" pk=category.pk %}">
-              <div class="category_set">
-                <div class="category_image">
-                  <img src="{{ category.category_image.url }}" width="80px"/>
+      <!--mid-->
+      <div class="content_mid">
+  <!-- 첫 번째 페이지
+        <div class="notice_page">
+          같이 서울시립대학교를 위해<br/>
+          프로젝트 진행할 사람을 모집합니다.<br/>
+          <br/>
+          UX&UI디자인 한 분<br/>
+          안드로이드, IOS 앱 개발 한 분<br/>
+          <br/>
+          지원은 과거 진행하셨던 작업물을<br/>
+          메일(hsh700788@naver.com)로<br/>
+          보내주시면 됩니다.<br/>
+          <br/>
+          관심있는 분 편하게 연락주시면 됩니다.<br/>
+        </div>
+  -->
+        <div class="main_page">
+        <!--categories-->
+{#          <div class="content_list categorys">#}
+{#            {% for category in categorys %}#}
+{#              <div class="category_set">#}
+{#                <div class="category_image">#}
+{#                  <img src="{{ category.category_image.url }}" width="80px"/>#}
+{#                </div>#}
+{#                <div class="category_name">#}
+{#                  {{ category }}#}
+{#                </div>#}
+{#              </div>#}
+{#            {% endfor %}#}
+{#          </div>#}
+          {% block content %}
+            <!--restaurants-->
+            <div class="category_list">전체 | 학식 | 한식 | 일식 | 중식 | 양식</div>
+            <div class="content_list restaurants">
+              {% for restaurant in restaurants %}
+                <div class="restaurant_set">
+                  <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
+                  <div class="restaurant_content">
+                    <div class="restaurant_name">{{ restaurant }}</div>
+                    <div class="restaurant_star">* 4.4</div>
+                  </div>
+                  <a href="#"><div class="comments">후<br>기<br>보<br>기</div></a>
                 </div>
-                <div class="category_name">
-                  {{ category }}
-                </div>
-              </div>
-            </a>
-          {% endfor %}
+              {% endfor %}
+            </div>
+          {% endblock %}
         </div>
       </div>
+      <!--footer-->
+      <div class="content_footer"></div>
 
 
 
-      {% endblock %}
     </div>
-    <!--footer-->
-    <div class="content_footer"></div>
+    <div class="swiper-slide content">
 
+      <div class="map">
+        <!--map-->
+        <div id="map"></div>
+      </div>
+      <div class="menu-button">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
   </div>
+</div>
+
+  <!-- Swiper JS -->
+<script src='../../static/base_app/js/swiper.min.js'></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var menuButton = document.querySelector('.menu-button');
+  var swiper = new Swiper('.swiper-container', {
+    slidesPerView: 'auto',
+    initialSlide: 1,
+    resistanceRatio: 0,
+    slideToClickedSlide: false,
+    allowTouchMove: false,
+    on: {
+      init: function () {
+        var slider = this;
+        menuButton.addEventListener('click', function () {
+          if (slider.activeIndex === 0) {
+            slider.slideNext();
+          } else {
+            slider.slidePrev();
+          }
+        }, true);
+      },
+      slideChange: function () {
+        var slider = this;
+        if (slider.activeIndex === 0) {
+          menuButton.classList.add('cross');
+        } else {
+          menuButton.classList.remove('cross');
+        }
+      },
+    }
+  });
+</script>
 
 
-  <!--map-->
-  <div id="map"></div>
 
 
+
+  <!--map setting -->
   <script>
     var markers = [];
     var markerCluster= null;
@@ -110,5 +172,6 @@
   async defer></script>
   <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
   </script>
+
 </body>
 </html>

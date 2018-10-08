@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Restaurant, Category
+from .models import Restaurant, Category, Comment
 
 
 # Create your views here.
@@ -17,7 +17,7 @@ def base(request):
         'categorys': categorys,
         # 'filered_restaurants': filtered_restaurants,
     }
-    return render(request, 'base_app/base2.html', ctx)
+    return render(request, 'base_app/base.html', ctx)
 
 def category(request, pk):
     category = Category.objects.filter(pk=pk)
@@ -27,3 +27,13 @@ def category(request, pk):
         'category': category,
     }
     return render(request, 'base_app/category.html', ctx)
+
+
+# def comment(request, pk):
+#     restaurant = Restaurant.objects.filter(pk=pk)
+#     comments = Comment.objects.filter(restaurant__pk=pk)
+#     ctx = {
+#         'restaurant': restaurant,
+#         'comments': comments,
+#     }
+#     return render(request, 'base_app/comment.html', ctx)
