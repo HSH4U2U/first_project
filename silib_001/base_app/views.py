@@ -8,9 +8,9 @@ def base(request):
     categorys = Category.objects.all()
 
     # 카테고리 별 restaurants 추출
-    # filtered_restaurants = []
-    # for pk in range(categorys):
-    #     filtered_restaurants[pk] = Restaurant.objects.filter(category__pk=pk)
+    # filtered_restaurants = {}
+    # for category in categorys:
+    #     filtered_restaurants[category] = Restaurant.objects.filter(category=category)
 
     ctx = {
         'restaurants': restaurants,

@@ -35,6 +35,7 @@ a {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 .menu {
   min-width: 100px;
@@ -114,9 +115,117 @@ a {
   transform: translateY(-13.5px) rotate(40.5deg);
 }
 
+
 /*content*/
 
+/*content_head*/
+.content_head {
+  width: 100%;
+  padding: 5% 8%;
+  border-bottom: #DCDCDC solid 0.1px;
+  font-weight: lighter;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
+.content_head .logo {
+  display: inline-block;
+  margin-right: 40%;
+}
+
+/*content_mid*/
+.content_mid {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+/*notice_page*/
+.content_mid .notice_page {
+  display: inline-block;
+  padding: 3% 8%;
+  line-height: 1.6em;
+  font-size: 16px;
+}
+
+/*main_page*/
+.content_list {
+  padding: 3% 8%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/*categories*/
+.category_image {
+  filter: brightness(110%);
+}
+
+.category_name {
+  text-align: center;
+  font-size: 10px;
+  margin-bottom: 10px;
+}
+
+/*restaurants*/
+.category_list {
+  font-size: 16px;
+  padding: 6px 0;
+  border-bottom: black solid 0.1px;
+}
+
+.restaurants {
+  font-size: 12px;
+  height: 500px;
+  overflow-y: scroll;
+}
+
+/*scroll design*/
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #999;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+.restaurant_set {
+  padding: 12px 0;
+  border-bottom: #DCDCDC solid 0.1px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.restaurant_set div {
+  display: inline-block;
+}
+
+.restaurant_image {
+  float: left;
+}
+
+.comments {
+  float: right;
+  font-size: 10px;
+}
 
 /*map*/
 #map {
