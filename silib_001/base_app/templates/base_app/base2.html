@@ -7,8 +7,104 @@
   <title>bld | 서울시립대 음식점</title>
   <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/base2.css' %}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
-  </head>
+  <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/swiper.min.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+</head>
 <body>
+
+<!-- Swiper -->
+<div class="swiper-container">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide menu">Menu slide</div>
+    <div class="swiper-slide content">
+
+      <div class="map">
+        <!--map-->
+        <div id="map"></div>
+      </div>
+      <div class="menu-button">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Swiper JS -->
+<script src='../../static/base_app/js/swiper.min.js'></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var menuButton = document.querySelector('.menu-button');
+  var swiper = new Swiper('.swiper-container', {
+    slidesPerView: 'auto',
+    initialSlide: 1,
+    resistanceRatio: 0,
+    slideToClickedSlide: false,
+    allowTouchMove: false,
+    on: {
+      init: function () {
+        var slider = this;
+        menuButton.addEventListener('click', function () {
+          if (slider.activeIndex === 0) {
+            slider.slideNext();
+          } else {
+            slider.slidePrev();
+          }
+        }, true);
+      },
+      slideChange: function () {
+        var slider = this;
+        if (slider.activeIndex === 0) {
+          menuButton.classList.add('cross');
+        } else {
+          menuButton.classList.remove('cross');
+        }
+      },
+    }
+  });
+</script>
+
+
+
+
+
+  <!--map setting -->
+  <script>
+    var markers = [];
+    var markerCluster= null;
+    function initMap() {
+        // map options
+        var options = {
+            center: {lat:37.583500, lng:127.05200},
+            zoom: 15,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+            };
+
+        // new map
+        var map = new
+        google.maps.Map(document.getElementById('map'), options);
+
+        {% for restaurant in restaurants %}
+            var marker = new google.maps.Marker({
+                position: {{ restaurant.locate }},
+                map: map,
+                // icon:,
+            });
+            markers.push(marker);
+        {% endfor %}
+       var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: '../static/base_app/images/m'});
+      }
+
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbX8bL78zKMX1D7viqLsXJikPwaLB8omQ&callback=initMap"
+  async defer></script>
+  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+  </script>
 
 </body>
 </html>

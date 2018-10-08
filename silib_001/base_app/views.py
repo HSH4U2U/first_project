@@ -6,11 +6,18 @@ from .models import Restaurant, Category
 def base(request):
     restaurants = Restaurant.objects.all()
     categorys = Category.objects.all()
+
+    # 카테고리 별 restaurants 추출
+    # filtered_restaurants = []
+    # for pk in range(categorys):
+    #     filtered_restaurants[pk] = Restaurant.objects.filter(category__pk=pk)
+
     ctx = {
         'restaurants': restaurants,
         'categorys': categorys,
+        # 'filered_restaurants': filtered_restaurants,
     }
-    return render(request, 'base_app/base.html', ctx)
+    return render(request, 'base_app/base2.html', ctx)
 
 def category(request, pk):
     category = Category.objects.filter(pk=pk)
