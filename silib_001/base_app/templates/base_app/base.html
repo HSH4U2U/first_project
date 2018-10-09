@@ -70,7 +70,7 @@
                     <div class="restaurant_name">{{ restaurant }}</div>
                     <div class="restaurant_star">* 4.4</div>
                   </div>
-                  <a href="#"><div class="comments">후<br>기<br>보<br>기</div></a>
+                  <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
                 </div>
               {% endfor %}
             </div>
@@ -89,7 +89,7 @@
         <!--map-->
         <div id="map"></div>
       </div>
-      <div class="menu-button">
+      <div class="menu-button cross">
         <div class="bar"></div>
         <div class="bar"></div>
         <div class="bar"></div>
@@ -106,7 +106,7 @@
   var menuButton = document.querySelector('.menu-button');
   var swiper = new Swiper('.swiper-container', {
     slidesPerView: 'auto',
-    initialSlide: 1,
+    initialSlide: 0,
     resistanceRatio: 0,
     slideToClickedSlide: false,
     allowTouchMove: false,
@@ -136,7 +136,7 @@
 
 
 
-
+{% block mapMarker %}
   <!--map setting -->
   <script>
     var markers = [];
@@ -144,7 +144,7 @@
     function initMap() {
         // map options
         var options = {
-            center: {lat:37.583500, lng:127.05200},
+            center: {lat:37.583929, lng:127.059024},
             zoom: 15,
             mapTypeControl: false,
             streetViewControl: false,
@@ -154,15 +154,13 @@
         // new map
         var map = new
         google.maps.Map(document.getElementById('map'), options);
-
-        {% for restaurant in restaurants %}
-            var marker = new google.maps.Marker({
-                position: {{ restaurant.locate }},
-                map: map,
-                // icon:,
-            });
-            markers.push(marker);
-        {% endfor %}
+          {% for restaurant in restaurants %}
+              var marker = new google.maps.Marker({
+                  position: {{ restaurant.locate }},
+                  map: map,
+              });
+              markers.push(marker);
+          {% endfor %}
        var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: '../static/base_app/images/m'});
       }
@@ -172,6 +170,7 @@
   async defer></script>
   <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
   </script>
+{% endblock %}
 
 </body>
 </html>

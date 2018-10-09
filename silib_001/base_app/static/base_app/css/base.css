@@ -206,7 +206,8 @@ a {
 }
 
 .restaurant_set {
-  padding: 12px 0;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
   border-bottom: #DCDCDC solid 0.1px;
   display: flex;
   align-items: center;

@@ -19,21 +19,23 @@ def base(request):
     }
     return render(request, 'base_app/base.html', ctx)
 
-def category(request, pk):
-    category = Category.objects.filter(pk=pk)
-    restaurants = Restaurant.objects.filter(category__pk=pk)
+# def category(request, pk):
+#     category = Category.objects.filter(pk=pk)
+#     restaurants = Restaurant.objects.filter(category__pk=pk)
+#     ctx = {
+#         'restaurants': restaurants,
+#         'category': category,
+#     }
+#     return render(request, 'base_app/category.html', ctx)
+
+
+def restaurant(request, pk):
+    restaurants = Restaurant.objects.all()
+    selected_restaurant = Restaurant.objects.filter(pk=pk)
+    comments = Comment.objects.filter(restaurant__pk=pk)
     ctx = {
         'restaurants': restaurants,
-        'category': category,
+        'selected_restaurant': selected_restaurant,
+        'comments': comments,
     }
-    return render(request, 'base_app/category.html', ctx)
-
-
-# def comment(request, pk):
-#     restaurant = Restaurant.objects.filter(pk=pk)
-#     comments = Comment.objects.filter(restaurant__pk=pk)
-#     ctx = {
-#         'restaurant': restaurant,
-#         'comments': comments,
-#     }
-#     return render(request, 'base_app/comment.html', ctx)
+    return render(request, 'base_app/restaurant.html', ctx)
