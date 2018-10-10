@@ -30,8 +30,9 @@
 
       <!--mid-->
       <div class="content_mid">
-  <!-- 첫 번째 페이지
-        <div class="notice_page">
+        {% block content %}
+  <!-- 첫 번째 페이지 -->
+        <div style="display: none" class="notice_page page0">
           같이 서울시립대학교를 위해<br/>
           프로젝트 진행할 사람을 모집합니다.<br/>
           <br/>
@@ -44,38 +45,40 @@
           <br/>
           관심있는 분 편하게 연락주시면 됩니다.<br/>
         </div>
-  -->
-        <div class="main_page">
+
+        <div class="main_page page1">
         <!--categories-->
-{#          <div class="content_list categorys">#}
-{#            {% for category in categorys %}#}
-{#              <div class="category_set">#}
-{#                <div class="category_image">#}
-{#                  <img src="{{ category.category_image.url }}" width="80px"/>#}
-{#                </div>#}
-{#                <div class="category_name">#}
-{#                  {{ category }}#}
-{#                </div>#}
-{#              </div>#}
-{#            {% endfor %}#}
-{#          </div>#}
-          {% block content %}
-            <!--restaurants-->
-            <div class="category_list">전체 | 학식 | 한식 | 일식 | 중식 | 양식</div>
-            <div class="content_list restaurants">
-              {% for restaurant in restaurants %}
-                <div class="restaurant_set">
-                  <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
-                  <div class="restaurant_content">
-                    <div class="restaurant_name">{{ restaurant }}</div>
-                    <div class="restaurant_star">* 4.4</div>
-                  </div>
-                  <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
+          <div class="content_list categorys">
+            {% for category in categorys %}
+              <div class="category_set {{ category }}">
+                <div class="category_image">
+                  <img src="{{ category.category_image.url }}" width="80px"/>
                 </div>
-              {% endfor %}
-            </div>
-          {% endblock %}
+                <div class="category_name">
+                  {{ category }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
         </div>
+
+        <div style="display: none" class="main_page page2">
+          <!--restaurants-->
+          <div class="category_list">전체 | 학식 | 한식 | 일식 | 중식 | 양식</div>
+          <div class="content_list restaurants">
+            {% for restaurant in restaurants %}
+              <div style="display: none" class="restaurant_set {{ restaurant.category }}">
+                <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
+                <div class="restaurant_content">
+                  <div class="restaurant_name">{{ restaurant }}</div>
+                  <div class="restaurant_star">* 4.4</div>
+                </div>
+                <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endblock %}
       </div>
       <!--footer-->
       <div class="content_footer"></div>
@@ -129,12 +132,9 @@
           menuButton.classList.remove('cross');
         }
       },
-    }
+    },
   });
 </script>
-
-
-
 
 {% block mapMarker %}
   <!--map setting -->
@@ -171,6 +171,44 @@
   <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
   </script>
 {% endblock %}
+
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
+<script>
+  // page 전환
+  $('.logo').on('click', function() {
+      if ($('.page0').css('display') !== "none") {
+          $('.page0').hide();
+          $('.page1').fadeIn("slow");
+      } else if ($('.page1').css('display') !== "none") {
+          $('.page1').hide();
+          $('.page0').fadeIn("slow");
+      } else {
+          $('.page2').hide();
+          $('.page1').fadeIn("slow");
+      }
+  });
+
+  // category 해당 restaurant 추출
+  var restaurant_set = $('.restaurant_set');
+  $('.category_set').on('click', function() {
+      $('.page1').hide();
+      $('.page2').show();
+      for (i=0; i<restaurant_set.length; i++) {
+          if (this.classList[1] === $('.restaurant_set')[i].classList[1]) {
+              restaurant_set[i].style.display = "flex"
+          } else {
+              restaurant_set[i].style.display = "none"
+          }
+      }
+  });
+
+</script>
+
+
 
 </body>
 </html>

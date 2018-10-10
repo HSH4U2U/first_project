@@ -22,12 +22,15 @@ class Menu(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=20, verbose_name='음식점 이름',)
-    category = models.ForeignKey(Category, blank=True, on_delete=models.CASCADE, verbose_name='카테고리',)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE, verbose_name='카테고리',)
     # main_image = models.ImageField(blank=True, verbose_name='음식점 사진',)
-    menu = models.ForeignKey(Menu, blank=True, on_delete=models.CASCADE, verbose_name='음식점 메뉴',)
+    menu = models.ForeignKey(Menu, null=True, blank=True, on_delete=models.CASCADE, verbose_name='음식점 메뉴',)
     open_to_close = models.TextField(blank=True, verbose_name='오픈 & 마감',)
     STATUS_CHOICES = (
         ('가능', '가능'),
@@ -69,9 +72,9 @@ class Comment(models.Model):
 
     # 먹은 음식의 종류랑 평점 연결이 자유롭게 어떻게..!?
     # dish_eaten = models.CharField(max_length=20, verbose_name='먹은 음식',)
-    dish_eaten = models.ForeignKey(Menu, blank=True, on_delete=models.CASCADE, verbose_name='먹은 음식',)
+    dish_eaten = models.ForeignKey(Menu, null=True, blank=True, on_delete=models.CASCADE, verbose_name='먹은 음식',)
 
-    content = models.CharField(max_length=20, verbose_name='20자평',)
+    content = models.CharField(max_length=150, verbose_name='100자평',)
 
     STATUS_CHOICES = (
         ('꼭 다시 먹는다', '꼭 다시 먹는다'),
@@ -79,6 +82,7 @@ class Comment(models.Model):
         ('절대 안 먹는다', '절대 안 먹는다'),
     )
     try_again = models.TextField(choices=STATUS_CHOICES, verbose_name='다시 먹을 지 여부',)
+    # police = models.IntegerField(verbose_name='신고 수',)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

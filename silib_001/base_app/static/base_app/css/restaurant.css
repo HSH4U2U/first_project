@@ -19,7 +19,7 @@
 }
 
 .profile_content {
-  margin-right: 110px;
+  margin-right: 95px;
 }
 
 .upload_time {
@@ -30,7 +30,7 @@
 .police {
   display: flex;
   align-items: center;
-  width: 30px;
+  width: 45px;
   justify-content: space-evenly;
   color: darkred;
 }

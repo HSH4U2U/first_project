@@ -1,6 +1,7 @@
 {% extends "base_app/base.html" %}
 
 {% block content %}
+<div class="main_page">
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/restaurant.css' %}">
   <div class="comment_list">
@@ -15,7 +16,7 @@
           </div>
           <div class="police">
             <div><img src="{% static 'base_app/images/police.png' %}" width="15"></div>
-            <div>0</div>
+            <div>신고</div>
           </div>
         </div>
 
@@ -39,7 +40,7 @@
     {% endfor %}
 
   </div>
-
+</div>
 {% endblock %}
 
 {% block mapMarker %}
@@ -53,10 +54,11 @@
           {% for restaurant in selected_restaurant %}
             center: {{ restaurant.locate }},
           {% endfor %}
-            zoom: 19,
+            zoom: 21,
             mapTypeControl: false,
             streetViewControl: false,
             fullscreenControl: false,
+            maxZoom: 21,
             };
 
         // new map
@@ -77,7 +79,7 @@
               markers.push(marker);
           {% endfor %}
        var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: '../static/base_app/images/m'});
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
 
   </script>
