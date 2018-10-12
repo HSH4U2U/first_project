@@ -18,6 +18,13 @@
     <div class="swiper-slide menu">
       <div class="content_head">
 {#        <div class="logo"><img src="{% static 'base_app/images/logo2.png' %}" width="80"></div>#}
+        {% block back %}
+        <div class="back">
+          <div><img src="{% static 'base_app/images/back.png' %}" width="13"></div>
+          <div class="back_content">Home</div>
+        </div>
+        {% endblock %}
+
         <div class="logo" style="font-size:30px;">bld</div>
         <!-- 로그인 전
         <div class="signup_mypage">Signup</div>
@@ -179,22 +186,26 @@
 
 <script>
   // page 전환
-  $('.logo').on('click', function() {
+  $('.back').on('click', function() {
       if ($('.page0').css('display') !== "none") {
           $('.page0').hide();
           $('.page1').fadeIn("slow");
+          $('.back_content').text("Home")
       } else if ($('.page1').css('display') !== "none") {
           $('.page1').hide();
           $('.page0').fadeIn("slow");
+          $('.back_content').text("이전 페이지")
       } else {
           $('.page2').hide();
           $('.page1').fadeIn("slow");
+          $('.back_content').text("이전 페이지")
       }
   });
 
   // category 해당 restaurant 추출
   var restaurant_set = $('.restaurant_set');
   $('.category_set').on('click', function() {
+      $('.back_content').text("이전 페이지");
       $('.page1').hide();
       $('.page2').show();
       for (i=0; i<restaurant_set.length; i++) {
