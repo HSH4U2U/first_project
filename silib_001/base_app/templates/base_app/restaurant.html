@@ -22,7 +22,10 @@
           <div class="profile_image" style="background-color: deepskyblue; width: 35px; height: 35px"></div>
           <div class="profile_content">
             <div class="profile_nickname">커서잘될놈</div>
-            <div class="upload_time">18/10/09 16:33</div>
+            <div class="upload_time">
+              <span>{{ comment.created_at|date:"y/m/d" }}</span>
+              <span>{{ comment.created_at|time:"H:i" }}</span>
+            </div>
           </div>
           <div class="police">
             <div><img src="{% static 'base_app/images/police.png' %}" width="15"></div>
@@ -32,13 +35,13 @@
 
         <!--comment-->
         <div class="comment_set">
-          <div class="comment_content">맛있고, 저렴해서 다음에 꼭 갈 듯함, 다들 가서 한 뚝빼기 하삼.</div>
+          <div class="comment_content">{{ comment.content }}</div>
             <div class="grade_set">
-              <span class="taste"><b>맛</b><span> A</span></span>
-              <span class="cost"><b>가격</b><span> A</span></span>
-              <span class="clean"><b>청결</b><span> B</span></span>
-              <span class="like"><span><img src="{% static 'base_app/images/like.png' %}" width="12"></span><span> 1</span></span>
-              <span class="dislike"><span><img src="{% static 'base_app/images/dislike.png' %}" width="12"></span><span> 1</span></span>
+              <span class="taste"><b>맛</b><span> {{ comment.taste_grade }}</span></span>
+              <span class="cost"><b>가격</b><span> {{ comment.price_grade }}</span></span>
+              <span class="clean"><b>청결</b><span> {{ comment.clean_grade }}</span></span>
+              <span class="like"><span><img src="{% static 'base_app/images/like.png' %}" width="12"></span><span> 0</span></span>
+              <span class="dislike"><span><img src="{% static 'base_app/images/dislike.png' %}" width="12"></span><span> 0</span></span>
             </div>
           <div class="comment_images">
             <div class="comment_image" style="background-color: limegreen; width: 120px; height: 120px"></div>

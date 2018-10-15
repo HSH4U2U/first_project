@@ -49,6 +49,8 @@ class Restaurant(models.Model):
         locate = "{lat:" + self.latitude + ", lng:" + self.longitude + "}"
         return locate
 
+    # TODO: comment에 있는 average_star 다 더해서 전체 평점 구하기
+
     class Meta:
         ordering = ['-id']
 
@@ -60,14 +62,17 @@ class Comment(models.Model):
     # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='작성자')   # Profile의 user와 같은 거?? 따로 부름??
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, verbose_name='해당 가게')
 
-    # 구글 평점 가져오기
-    # 모델 class 하나 더 파서 하는 좋은 방법 없나 생각!
+    # TODO: 구글 평점 가져오기
+    STATUS_CHOICES = (
+        (4, 'A'),
+        (3, 'B'),
+        (2, 'C'),
+        (1, 'D'),
+        (0, 'F'),
+    )
     price_star = models.IntegerField(verbose_name='가격 만족도',)
     taste_star = models.IntegerField(verbose_name='맛 만족도',)
     clean_star = models.IntegerField(verbose_name='청결성 만족도',)
-
-    # 위에 것으로 자동 계산할 듯함
-    # avg_star = models.IntegerField(verbose_name='평점(평균 점수)',)
 
 
     # 먹은 음식의 종류랑 평점 연결이 자유롭게 어떻게..!?
@@ -88,6 +93,10 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-id']
+
+    def average_star(self):
+        average_star = self.taste_star / 2 + self.price_star / 4 + self.clean_star / 4
+        return average_star
 
     # comment 쓰고 다시 그 페이지로(그대로 따옴, 수정 필요)
     # def get_absolute_url(self):

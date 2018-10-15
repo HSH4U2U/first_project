@@ -25,14 +25,16 @@
         </div>
         {% endblock %}
 
-        <div class="logo" style="font-size:30px;">bld</div>
+        <div class="logo"><img src="{% static 'base_app/images/logo.png' %}" width="60"></div>
         <!-- 로그인 전
         <div class="signup_mypage">Signup</div>
         <div class="login_logout">Login</div>
         -->
         <!-- 로그인 후 -->
-        <div class="signup_mypage">Mypage</div>
-        <div class="login_logout">Logout</div>
+        <div class="log">
+          <div class="signup_mypage">Mypage</div>
+          <div class="login_logout">Logout</div>
+        </div>
       </div>
 
       <!--mid-->

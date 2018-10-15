@@ -22,10 +22,19 @@
   margin-right: 95px;
 }
 
-.upload_time {
-  font-size: 10px;
+.profile_nickname {
+  font-weight: bold;
 }
 
+.upload_time {
+  font-size: 10px;
+  font-weight: lighter;
+  margin-top: 2px;
+}
+
+.upload_time span:first-child{
+  margin-right: 1px;
+}
 
 .police {
   display: flex;
