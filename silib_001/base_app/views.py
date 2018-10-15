@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Restaurant, Category, Comment
-
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 def base(request):
@@ -8,14 +9,14 @@ def base(request):
     categorys = Category.objects.all()
 
     # 카테고리 별 restaurants 추출
-    # filtered_restaurants = {}
-    # for category in categorys:
-    #     filtered_restaurants[category] = Restaurant.objects.filter(category=category)
+    category_restaurants = {}
+    for category in categorys:
+        category_restaurants[category] = Restaurant.objects.filter(category=category)
 
     ctx = {
         'restaurants': restaurants,
         'categorys': categorys,
-        # 'filered_restaurants': filtered_restaurants,
+        'category_restaurants': category_restaurants,
     }
     return render(request, 'base_app/base.html', ctx)
 

@@ -21,7 +21,7 @@
         {% block back %}
         <div class="back">
           <div><img src="{% static 'base_app/images/back.png' %}" width="13"></div>
-          <div class="back_content">Home</div>
+          <div class="back_content">공지사항</div>
         </div>
         {% endblock %}
 
@@ -108,6 +108,12 @@
   </div>
 </div>
 
+  <!--jquery-->
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
   <!-- Swiper JS -->
 <script src='../../static/base_app/js/swiper.min.js'></script>
 
@@ -148,29 +154,105 @@
   <script>
     var markers = [];
     var markerCluster= null;
-    function initMap() {
-        // map options
-        var options = {
-            center: {lat:37.583929, lng:127.059024},
-            zoom: 15,
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: false,
+    // TODO: category 해당 restaurant 추출
+    var selected_category = '';
+    $(".category_set").on('click', function () {
+        var selected_category = this.classList[1]
+    });
+    $(document).ready(function () {
+        if (selected_category) {
+            console.log("{{ category_restaurants }}");
+            // map options
+            var options = {
+                center: {lat: 37.583929, lng: 127.059024},
+                zoom: 15,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
             };
 
-        // new map
-        var map = new
-        google.maps.Map(document.getElementById('map'), options);
-          {% for restaurant in restaurants %}
-              var marker = new google.maps.Marker({
-                  position: {{ restaurant.locate }},
-                  map: map,
-              });
-              markers.push(marker);
-          {% endfor %}
-       var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: '../static/base_app/images/m'});
-      }
+            // new map
+            var map = new
+            google.maps.Map(document.getElementById('map'), options);
+            {% for restaurant in category_restaurants.selected_category %}
+                var marker = new google.maps.Marker({
+                    position: {{ restaurant.locate }},
+                    map: map,
+                });
+
+                // 클릭 시 restaurant 소개 & 센터 오게
+                var restaurant_introduction =
+                    '<div style="width: 300px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
+                    ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
+                    ' <div class="restaurant_content">\n' +
+                    '   <div class="restaurant_name">{{ restaurant }}</div>\n' +
+                    '   <div class="restaurant_star">* 4.4</div>\n' +
+                    ' </div>\n' +
+                    ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
+                    '</div>';
+                marker['infowindow'] = new google.maps.InfoWindow({
+                    content: restaurant_introduction
+                });
+
+                marker.addListener('click', function() {
+                    map.setZoom(21);
+                    map.panTo(this.getPosition());
+                    this['infowindow'].open(map, this);
+                });
+                markers.push(marker);
+            {% endfor %}
+        }
+
+
+        else {
+            // map options
+            var options = {
+                center: {lat: 37.583929, lng: 127.059024},
+                zoom: 15,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
+            };
+
+            // new map
+            var map = new
+            google.maps.Map(document.getElementById('map'), options);
+            {% for restaurant in restaurants %}
+                var marker = new google.maps.Marker({
+                    position: {{ restaurant.locate }},
+                    map: map,
+                });
+
+                // 클릭 시 restaurant 소개 & 센터 오게
+                var restaurant_introduction =
+                    '<div style="width: 300px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
+                    ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
+                    ' <div class="restaurant_content">\n' +
+                    '   <div class="restaurant_name">{{ restaurant }}</div>\n' +
+                    '   <div class="restaurant_star">* 4.4</div>\n' +
+                    ' </div>\n' +
+                    ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
+                    '</div>';
+                marker['infowindow'] = new google.maps.InfoWindow({
+                    content: restaurant_introduction
+                });
+
+                marker.addListener('click', function() {
+                    map.setZoom(21);
+                    map.panTo(this.getPosition());
+                    this['infowindow'].open(map, this);
+                });
+                markers.push(marker);
+            {% endfor %}
+
+            var markerCluster = new MarkerClusterer(map, markers,
+                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        }
+    });
+
+    function initMap() {
+
+    }
 
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbX8bL78zKMX1D7viqLsXJikPwaLB8omQ&callback=initMap"
@@ -179,35 +261,32 @@
   </script>
 {% endblock %}
 
-<script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
+
 
 <script>
   // page 전환
   $('.back').on('click', function() {
       if ($('.page0').css('display') !== "none") {
           $('.page0').hide();
-          $('.page1').fadeIn("slow");
-          $('.back_content').text("Home")
+          $('.page1').fadeIn(1200);
+          $('.back_content').text("공지사항")
       } else if ($('.page1').css('display') !== "none") {
           $('.page1').hide();
-          $('.page0').fadeIn("slow");
-          $('.back_content').text("이전 페이지")
+          $('.page0').fadeIn(1200);
+          $('.back_content').text("카테고리")
       } else {
           $('.page2').hide();
-          $('.page1').fadeIn("slow");
-          $('.back_content').text("이전 페이지")
+          $('.page1').fadeIn(1200);
+          $('.back_content').text("공지사항")
       }
   });
 
   // category 해당 restaurant 추출
   var restaurant_set = $('.restaurant_set');
   $('.category_set').on('click', function() {
-      $('.back_content').text("이전 페이지");
+      $('.back_content').text("카테고리");
       $('.page1').hide();
-      $('.page2').show();
+      $('.page2').fadeIn(1200);
       for (i=0; i<restaurant_set.length; i++) {
           if (this.classList[1] === $('.restaurant_set')[i].classList[1]) {
               restaurant_set[i].style.display = "flex"

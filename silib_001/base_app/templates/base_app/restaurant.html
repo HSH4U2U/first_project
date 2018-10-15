@@ -5,7 +5,7 @@
   <a href="{% url "base_app:base" %}">
     <div class ="back">
       <div><img src="{% static 'base_app/images/back.png' %}" width="13"></div>
-      <div class="back_content">이전 페이지</div>
+      <div class="back_content">Home</div>
     </div>
   </a>
 {% endblock %}
@@ -75,21 +75,74 @@
         var map = new
         google.maps.Map(document.getElementById('map'), options);
           {% for restaurant in restaurants %}
-              {#var unselected = {#}
-              {#    url: '../static/base_app/images/unselected.png',#}
-              {#    size: new google.maps.Size(20, 20),};#}
               var marker = new google.maps.Marker({
                   position: {{ restaurant.locate }},
                   map: map,
-                  {#icon: unselected,#}
-{#                  {% if restaurant == selected_restaurant %}#}
-                   //   icon:,
-{#                  {% endif %}#}
+              });
+
+              // 클릭 시 restaurant 소개 & 센터 오게
+              var restaurant_introduction =
+                  '<div style="width: 300px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
+                  ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
+                  ' <div class="restaurant_content">\n' +
+                  '   <div class="restaurant_name">{{ restaurant }}</div>\n' +
+                  '   <div class="restaurant_star">* 4.4</div>\n' +
+                  ' </div>\n' +
+                  ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
+                  '</div>';
+              marker['infowindow'] = new google.maps.InfoWindow({
+                  content: restaurant_introduction
+              });
+
+              marker.addListener('click', function() {
+                  map.setZoom(21);
+                  map.panTo(this.getPosition());
+                  this['infowindow'].open(map, this);
               });
               markers.push(marker);
           {% endfor %}
-       var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+              // 해당 restaurant 소개 바로 뜨게
+          {% for restaurant in selected_restaurant %}
+              var selectedMarker = new google.maps.Marker({
+                  position: {{ restaurant.locate }},
+                  map: map,
+                  zIndex: 19980206,
+                  label: {
+                      text: 'A',
+                      color: 'white',
+                      font_weight: 'bolder',
+                  }
+              });
+
+              // 클릭 시 restaurant 소개 & 센터 오게
+              var restaurant_introduction =
+                  '<div style="width: 300px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
+                  ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
+                  ' <div class="restaurant_content">\n' +
+                  '   <div class="restaurant_name">{{ restaurant }}</div>\n' +
+                  '   <div class="restaurant_star">* 4.4</div>\n' +
+                  ' </div>\n' +
+                  ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
+                  '</div>';
+              var infowindow = new google.maps.InfoWindow({
+                  content: restaurant_introduction
+              });
+
+              window.onload = function () {
+                  infowindow.open(map, selectedMarker);
+              };
+
+              selectedMarker.addListener('click', function() {
+                  map.setZoom(21);
+                  map.panTo(this.getPosition());
+                  infowindow.open(map, selectedMarker);
+              });
+          {% endfor %}
+
+
+      {# var markerCluster = new MarkerClusterer(map, markers,#}
+      {#      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});#}
       }
 
   </script>
