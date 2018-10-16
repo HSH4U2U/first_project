@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Restaurant, Category, Comment
-import json
-from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Q, Avg
+
 
 # Create your views here.
 def base(request):
@@ -12,6 +12,38 @@ def base(request):
     category_restaurants = {}
     for category in categorys:
         category_restaurants[category] = Restaurant.objects.filter(category=category)
+
+    # comment 에 있는 average_star 다 더해서 전체 평점 구하기
+    # 숫자로 받은 값을 grade 시스템으로
+    def number_to_grade(self):
+        if self > 4:
+            grade = 'A+'
+        elif self >= 3.5:
+            grade = 'A'
+        elif self > 3:
+            grade = 'B+'
+        elif self >= 2.5:
+            grade = 'B'
+        elif self > 2:
+            grade = 'C+'
+        elif self >= 1.5:
+            grade = 'C'
+        elif self > 1:
+            grade = 'D+'
+        elif self >= 0.5:
+            grade = 'D'
+        else:
+            grade = 'F'
+        return grade
+    for restaurant in restaurants:
+        if restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg'] is None:
+            restaurant.average_star = "-"
+        else:
+            taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
+            price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
+            clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
+            restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+        restaurant.save()
 
     ctx = {
         'restaurants': restaurants,
@@ -62,6 +94,26 @@ def restaurant(request, pk):
         comment.clean_grade = number_to_grade(comment.clean_star)
         comment.average_grade = number_to_grade(comment.average_star())
         comment.save()
+
+    # comment 에 있는 average_star 다 더해서 전체 평점 구하기
+    for restaurant in restaurants:
+        if restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg'] is None:
+            restaurant.average_star = "-"
+        else:
+            taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
+            price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
+            clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
+            restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+        restaurant.save()
+    for restaurant in selected_restaurant:
+        if restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg'] is None:
+            restaurant.average_star = "-"
+        else:
+            taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
+            price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
+            clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
+            restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+        restaurant.save()
 
     ctx = {
         'restaurants': restaurants,

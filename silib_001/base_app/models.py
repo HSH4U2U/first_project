@@ -49,8 +49,6 @@ class Restaurant(models.Model):
         locate = "{lat:" + self.latitude + ", lng:" + self.longitude + "}"
         return locate
 
-    # TODO: comment에 있는 average_star 다 더해서 전체 평점 구하기
-
     class Meta:
         ordering = ['-id']
 
