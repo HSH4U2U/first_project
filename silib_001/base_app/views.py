@@ -36,12 +36,16 @@ def base(request):
             grade = 'F'
         return grade
     for restaurant in restaurants:
+        restaurant.comment_count = "(" + str(restaurant.comment_set.all().count()) + ")"
         if restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg'] is None:
             restaurant.average_star = "-"
         else:
             taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
             price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
             clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
+            restaurant.taste_star = number_to_grade(taste_star)
+            restaurant.price_star = number_to_grade(price_star)
+            restaurant.clean_star = number_to_grade(clean_star)
             restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
         restaurant.save()
 
@@ -112,6 +116,9 @@ def restaurant(request, pk):
             taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
             price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
             clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
+            restaurant.taste_star = number_to_grade(taste_star)
+            restaurant.price_star = number_to_grade(price_star)
+            restaurant.clean_star = number_to_grade(clean_star)
             restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
         restaurant.save()
 

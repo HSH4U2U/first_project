@@ -213,6 +213,10 @@ a {
 }
 
 /*restaurants*/
+.page2 {
+  width: 100%;
+}
+
 .category_list {
   font-size: 16px;
   padding: 6px 0;
@@ -257,17 +261,65 @@ a {
   justify-content: space-between;
 }
 
-.restaurant_set div {
+.restaurant_image {
+  float: left;
   display: inline-block;
 }
 
-.restaurant_image {
-  float: left;
+.restaurant_content {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.restaurant_content_left {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  text-align: left;
+  margin-left: 5px;
+}
+
+.restaurant_content_left > div {
+  margin-bottom: 4px;
+}
+
+.restaurant_name {
+  font-weight: bolder;
+}
+
+.restaurant_info {
+  font-size: 8px;
+}
+
+.restaurant_star {
+  font-size: 10px;
+}
+
+.restaurant_star b {
+  color: orange;
+}
+
+.comment_count {
+  margin-right: 10px;
+}
+
+.restaurant_content_right {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-right: 5px;
+  font-size: 10px;
+  font-weight: lighter;
+  text-align: left;
+  justify-content: center;
 }
 
 .comments {
   float: right;
   font-size: 10px;
+  border-left: #DCDCDC 0.5px solid;
+  padding-left: 5px;
 }
 
 /*map*/

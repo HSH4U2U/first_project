@@ -30,11 +30,13 @@ class Restaurant(models.Model):
     name = models.CharField(max_length=20, verbose_name='음식점 이름',)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE, verbose_name='카테고리',)
     # main_image = models.ImageField(blank=True, verbose_name='음식점 사진',)
+    phone_number = models.CharField(blank=True, max_length=17, verbose_name='음식점 전화번호',)
     menu = models.ForeignKey(Menu, null=True, blank=True, on_delete=models.CASCADE, verbose_name='음식점 메뉴',)
     open_to_close = models.TextField(blank=True, verbose_name='오픈 & 마감',)
     STATUS_CHOICES = (
-        ('가능', '가능'),
-        ('불가능', '불가능'),
+        ('O', 'O'),
+        ('X', 'X'),
+        ('?', '?'),
     )
     is_package_possible = models.TextField(blank=True, choices=STATUS_CHOICES, verbose_name='포장 가능 여부', )
     is_delivery_possible = models.TextField(blank=True, choices=STATUS_CHOICES, verbose_name='배달 가능 여부', )
