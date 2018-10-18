@@ -58,6 +58,15 @@
         <div class="main_page page1">
         <!--categories-->
           <div class="content_list categorys">
+            <div class="category_set category_all">
+              <div class="category_image">
+{#                <img src="{{ category.category_image.url }}" width="80px"/>#}
+                <div style="display: inline-block; width: 80px; height: 80px; background-color: #9dc9ec"></div>
+              </div>
+              <div class="category_name">
+                전체
+              </div>
+            </div>
             {% for category in categorys %}
               <div class="category_set {{ category }}">
                 <div class="category_image">
@@ -73,7 +82,26 @@
 
         <div style="display: none" class="main_page page2">
           <!--restaurants-->
-          <div class="category_list">전체 | 학식 | 한식 | 일식 | 중식 | 양식</div>
+          <div class="category_list">
+{#            <span><input type="text" id="myInput" oninput="arraySort()"></span>#}
+            <span>
+              <select class="select_bar" id="select_filter">
+                <option selected value="0">등록순</option>
+                <option value="1">평점순</option>
+                <option value="2">인기순</option>
+                <option value="3">추천순</option>
+              </select>
+            </span>
+            <span>
+              <select class="select_bar" id="select_category">
+                <option selected>카테고리</option>
+                <option value="전체">전체</option>
+                {% for category in categorys %}
+                  <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+              </select>
+            </span>
+          </div>
           <div class="content_list restaurants">
             {% for restaurant in restaurants %}
               <div style="display: none" class="restaurant_set {{ restaurant.category }}">
@@ -81,16 +109,16 @@
                 <div class="restaurant_content">
                   <div class="restaurant_content_left">
                     <div class="restaurant_name">{{ restaurant }}</div>
-                    <div class="restaurant_info">010-0000-0000<br>매일 오후 6시 ~ 오후 12시</div>
+                    <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>
                     <div class="restaurant_star">
                       <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>
                       <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>
                     </div>
                   </div>
                   <div class="restaurant_content_right">
-                    <div><span>혼밥 </span><span>{{ restaurant.is_eating_lonely_possible }}</span></div>
-                    <div><span>포장 </span><span>{{ restaurant.is_package_possible }}</span></div>
-                    <div><span>배달 </span><span>{{ restaurant.is_delivery_possible }}</span></div>
+                    <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
+                    <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
+                    <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
                   </div>
                 </div>
                 <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
@@ -280,6 +308,7 @@
                 mapTypeControl: false,
                 streetViewControl: false,
                 fullscreenControl: false,
+                maxZoom: 21,
             };
 
             // new map
@@ -293,16 +322,28 @@
 
                 // 클릭 시 restaurant 소개 & 센터 오게
                 var restaurant_introduction =
-                    '<div style="width: 300px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
+                    '<div style="width: 250px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
                     ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
                     ' <div class="restaurant_content">\n' +
-                    '   <div class="restaurant_name">{{ restaurant }}</div>\n' +
-                    '   <div class="restaurant_star">* 4.4</div>\n' +
+                    '   <div class="restaurant_content_left">\n' +
+                    '     <div class="restaurant_name"><b>{{ restaurant }}</b></div>\n' +
+                    '     <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>\n' +
+                    '     <div class="restaurant_star">\n' +
+                    '       <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>\n' +
+                    '       <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>\n' +
+                    '     </div>\n' +
+                    '   </div>\n' +
+                    '   <div class="restaurant_content_right">\n' +
+                    '     <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>\n' +
+                    '     <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>\n' +
+                    '     <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>\n' +
+                    '   </div>\n' +
                     ' </div>\n' +
                     ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
-                    '</div>';
+                    '</div>\n';
+
                 marker['infowindow'] = new google.maps.InfoWindow({
-                    content: restaurant_introduction
+                    content: restaurant_introduction,
                 });
 
                 marker.addListener('click', function() {
@@ -357,8 +398,34 @@
               restaurant_set[i].style.display = "none"
           }
       }
+      if (this.classList[1] === "category_all") {
+          restaurant_set.css('display', 'flex')
+      }
   });
+  
+  // select bar 클릭 시 배열 변화
+  var select_filter = $('#select_filter');
+  var select_category = $('#select_category');
 
+  // TODO: 필터로 순서 변경
+  {#select_filter.change(function () {#}
+{##}
+{#  });#}
+  // 카테고리 선택
+  select_category.change(function () {
+      for (i=0; i<restaurant_set.length; i++) {
+          if (this.value.split(' ')[0] === $('.restaurant_set')[i].classList[1]) {
+              restaurant_set[i].style.display = "flex"
+          } else {
+              restaurant_set[i].style.display = "none"
+          }
+      }
+      if (this.value === "전체") {
+          restaurant_set.css('display', 'flex')
+      }
+  });
+  
+  
 </script>
 
 

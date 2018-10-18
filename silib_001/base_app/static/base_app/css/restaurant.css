@@ -1,7 +1,6 @@
 .comment_list {
   padding: 3% 8%;
   font-size: 12px;
-  height: 500px;
   overflow-y: scroll;
 }
 

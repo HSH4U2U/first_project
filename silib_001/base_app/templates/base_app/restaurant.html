@@ -85,14 +85,25 @@
 
               // 클릭 시 restaurant 소개 & 센터 오게
               var restaurant_introduction =
-                  '<div style="width: 300px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
-                  ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
-                  ' <div class="restaurant_content">\n' +
-                  '   <div class="restaurant_name">{{ restaurant }}</div>\n' +
-                  '   <div class="restaurant_star">* 4.4</div>\n' +
-                  ' </div>\n' +
-                  ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
-                  '</div>';
+                    '<div style="width: 250px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
+                    ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
+                    ' <div class="restaurant_content">\n' +
+                    '   <div class="restaurant_content_left">\n' +
+                    '     <div class="restaurant_name"><b>{{ restaurant }}</b></div>\n' +
+                    '     <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>\n' +
+                    '     <div class="restaurant_star">\n' +
+                    '       <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>\n' +
+                    '       <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>\n' +
+                    '     </div>\n' +
+                    '   </div>\n' +
+                    '   <div class="restaurant_content_right">\n' +
+                    '     <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>\n' +
+                    '     <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>\n' +
+                    '     <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>\n' +
+                    '   </div>\n' +
+                    ' </div>\n' +
+                    ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
+                    '</div>\n';
               marker['infowindow'] = new google.maps.InfoWindow({
                   content: restaurant_introduction
               });
@@ -120,14 +131,25 @@
 
               // 클릭 시 restaurant 소개 & 센터 오게
               var restaurant_introduction =
-                  '<div style="width: 300px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
-                  ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
-                  ' <div class="restaurant_content">\n' +
-                  '   <div class="restaurant_name">{{ restaurant }}</div>\n' +
-                  '   <div class="restaurant_star">* 4.4</div>\n' +
-                  ' </div>\n' +
-                  ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
-                  '</div>';
+                    '<div style="width: 250px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
+                    ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
+                    ' <div class="restaurant_content">\n' +
+                    '   <div class="restaurant_content_left">\n' +
+                    '     <div class="restaurant_name"><b>{{ restaurant }}</b></div>\n' +
+                    '     <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>\n' +
+                    '     <div class="restaurant_star">\n' +
+                    '       <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>\n' +
+                    '       <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>\n' +
+                    '     </div>\n' +
+                    '   </div>\n' +
+                    '   <div class="restaurant_content_right">\n' +
+                    '     <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>\n' +
+                    '     <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>\n' +
+                    '     <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>\n' +
+                    '   </div>\n' +
+                    ' </div>\n' +
+                    ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
+                    '</div>\n';
               var infowindow = new google.maps.InfoWindow({
                   content: restaurant_introduction
               });

@@ -46,8 +46,14 @@ def base(request):
             restaurant.taste_star = number_to_grade(taste_star)
             restaurant.price_star = number_to_grade(price_star)
             restaurant.clean_star = number_to_grade(clean_star)
+            restaurant.average_number = taste_star + price_star + clean_star
             restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
         restaurant.save()
+
+    # TODO: 필터별 restaurants 분류
+    # restaurants.sort_grade = sorted(restaurants, key=lambda x: x.average_number, reverse=True)
+    # restaurants.sort_comments =
+    # restaurants.save()
 
     ctx = {
         'restaurants': restaurants,
