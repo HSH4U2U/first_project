@@ -89,7 +89,6 @@
                 <option selected value="0">등록순</option>
                 <option value="1">평점순</option>
                 <option value="2">인기순</option>
-                <option value="3">추천순</option>
               </select>
             </span>
             <span>
@@ -103,27 +102,97 @@
             </span>
           </div>
           <div class="content_list restaurants">
-            {% for restaurant in restaurants %}
-              <div style="display: none" class="restaurant_set {{ restaurant.category }}">
-                <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
-                <div class="restaurant_content">
-                  <div class="restaurant_content_left">
-                    <div class="restaurant_name">{{ restaurant }}</div>
-                    <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>
-                    <div class="restaurant_star">
-                      <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>
-                      <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>
+            <div style="width: 100%; height: 100%" class="sort_register">
+              {% for restaurant in restaurants %}
+                <div style="display: none" class="restaurant_set {{ restaurant.category }}">
+                  <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
+                  <div class="restaurant_content">
+                    <div class="restaurant_content_left">
+                      <div class="restaurant_name">{{ restaurant }}</div>
+                      <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>
+                      <div class="restaurant_star">
+                        <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>
+                        <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>
+                      </div>
+                    </div>
+                    <div class="restaurant_content_right">
+                      <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
+                      <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
+                      <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
                     </div>
                   </div>
-                  <div class="restaurant_content_right">
-                    <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
-                    <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
-                    <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
-                  </div>
+                  <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
                 </div>
-                <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
-              </div>
-            {% endfor %}
+              {% endfor %}
+            </div>
+            <div style="width: 100%; height: 100%; display: none;" class="sort_grade">
+              {% for restaurant in sort_grade %}
+                <div style="display: none" class="restaurant_set {{ restaurant.category }}">
+                  <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
+                  <div class="restaurant_content">
+                    <div class="restaurant_content_left">
+                      <div class="restaurant_name">{{ restaurant }}</div>
+                      <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>
+                      <div class="restaurant_star">
+                        <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>
+                        <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>
+                      </div>
+                    </div>
+                    <div class="restaurant_content_right">
+                      <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
+                      <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
+                      <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
+                    </div>
+                  </div>
+                  <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
+                </div>
+              {% endfor %}
+            </div>
+            <div style="width: 100%; height: 100%; display: none" class="sort_comments">
+              {% for restaurant in sort_comments %}
+                <div style="display: none" class="restaurant_set {{ restaurant.category }}">
+                  <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
+                  <div class="restaurant_content">
+                    <div class="restaurant_content_left">
+                      <div class="restaurant_name">{{ restaurant }}</div>
+                      <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>
+                      <div class="restaurant_star">
+                        <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>
+                        <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>
+                      </div>
+                    </div>
+                    <div class="restaurant_content_right">
+                      <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
+                      <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
+                      <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
+                    </div>
+                  </div>
+                  <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
+                </div>
+              {% endfor %}
+            </div>
+
+{#            {% for restaurant in restaurants %}#}
+{#              <div style="display: none" class="restaurant_set {{ restaurant.category }}">#}
+{#                <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>#}
+{#                <div class="restaurant_content">#}
+{#                  <div class="restaurant_content_left">#}
+{#                    <div class="restaurant_name">{{ restaurant }}</div>#}
+{#                    <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>#}
+{#                    <div class="restaurant_star">#}
+{#                      <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>#}
+{#                      <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                  <div class="restaurant_content_right">#}
+{#                    <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>#}
+{#                    <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>#}
+{#                    <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>#}
+{#                  </div>#}
+{#                </div>#}
+{#                <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>#}
+{#              </div>#}
+{#            {% endfor %}#}
           </div>
         </div>
         {% endblock %}
@@ -408,9 +477,21 @@
   var select_category = $('#select_category');
 
   // TODO: 필터로 순서 변경
-  {#select_filter.change(function () {#}
-{##}
-{#  });#}
+  select_filter.change(function () {
+      if (this.value == 0) {
+          $('.sort_register').show();
+          $('.sort_grade').hide();
+          $('.sort_comments').hide();
+      } else if (this.value == 1) {
+          $('.sort_register').hide();
+          $('.sort_grade').show();
+          $('.sort_comments').hide();
+      } else {
+          $('.sort_register').hide();
+          $('.sort_grade').hide();
+          $('.sort_comments').show();
+      }
+  });
   // 카테고리 선택
   select_category.change(function () {
       for (i=0; i<restaurant_set.length; i++) {
@@ -424,11 +505,7 @@
           restaurant_set.css('display', 'flex')
       }
   });
-  
-  
 </script>
-
-
 
 </body>
 </html>

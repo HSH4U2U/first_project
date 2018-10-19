@@ -46,19 +46,31 @@ def base(request):
             restaurant.taste_star = number_to_grade(taste_star)
             restaurant.price_star = number_to_grade(price_star)
             restaurant.clean_star = number_to_grade(clean_star)
-            restaurant.average_number = taste_star + price_star + clean_star
             restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
         restaurant.save()
 
+        print(restaurant.comment_set.all().aggregate(Avg('taste_star')))
     # TODO: 필터별 restaurants 분류
-    # restaurants.sort_grade = sorted(restaurants, key=lambda x: x.average_number, reverse=True)
-    # restaurants.sort_comments =
-    # restaurants.save()
+    def sum_none(a,b,c):
+        if a is None:
+            a = 0
+            b = 0
+            c = 0
+        return a + b + c
+    def comment_star(x, y):
+        return x.comment_set.all().aggregate(Avg(y))[y + '__avg']
+
+    sort_grade = sorted(restaurants,
+                        key=lambda x: sum_none(comment_star(x, 'taste_star'), comment_star(x,'price_star'), comment_star(x,'clean_star'))
+                        , reverse=True)
+    sort_comments = sorted(restaurants, key=lambda x: x.comment_set.count(), reverse=True)
 
     ctx = {
         'restaurants': restaurants,
         'categorys': categorys,
         'category_restaurants': category_restaurants,
+        'sort_grade': sort_grade,
+        'sort_comments': sort_comments,
     }
     return render(request, 'base_app/base.html', ctx)
 
