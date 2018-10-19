@@ -479,17 +479,17 @@
   // TODO: 필터로 순서 변경
   select_filter.change(function () {
       if (this.value == 0) {
-          $('.sort_register').show();
+          $('.sort_register').fadeIn(1200);
           $('.sort_grade').hide();
           $('.sort_comments').hide();
       } else if (this.value == 1) {
           $('.sort_register').hide();
-          $('.sort_grade').show();
+          $('.sort_grade').fadeIn(1200);
           $('.sort_comments').hide();
       } else {
           $('.sort_register').hide();
           $('.sort_grade').hide();
-          $('.sort_comments').show();
+          $('.sort_comments').fadeIn(1200);
       }
   });
   // 카테고리 선택

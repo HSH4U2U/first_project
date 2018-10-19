@@ -76,3 +76,40 @@
   margin-right: 5px;
   display: inline-block;
 }
+
+.black_background {
+  position: absolute;
+  background-color: black;
+  opacity: 0.5;
+  width: 100%;
+  height: 200%;
+}
+
+.plus {
+  position: absolute;
+  display: block;
+  bottom: 30px;
+  right: 30px;
+}
+
+.plus img {
+  background-color: white;
+  border-radius: 25px;
+  box-shadow: #999 0 3px 6px;
+}
+
+.plus_hide {
+  display: none;
+}
+
+.add_comment {
+  bottom: 90px
+}
+
+.message {
+  bottom: 110px;
+  right: 90px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
