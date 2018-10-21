@@ -27,10 +27,7 @@
               <span>{{ comment.created_at|time:"H:i" }}</span>
             </div>
           </div>
-          <div class="police">
-            <div><img src="{% static 'base_app/images/police.png' %}" width="15"></div>
-            <div>신고</div>
-          </div>
+          <div class="comment_restaurant"><a href="{% url "base_app:restaurant" pk=comment.restaurant.pk %}">＃<span>{{ comment.restaurant }}</span></a></div>
         </div>
 
         <!--comment-->
@@ -54,9 +51,15 @@
   </div>
 </div>
 <div class="black_background plus_hide"></div>
-<div class="plus" id="plus"><img src="{% static 'base_app/images/plus.png' %}" width="50"></div>
-<div class="plus add_comment plus_hide"><img src="{% static 'base_app/images/write.png' %}" width="50"></div>
-<div class="plus add_comment plus_hide message1">후기 작성</div>
+<div class="plus" id="plus">
+  <img src="{% static 'base_app/images/plus.png' %}" width="50">
+</div>
+<div class="plus plus1 plus_hide">
+  {% for selected_restaurant in selected_restaurant %}
+    <a href="{% url "base_app:write_comment" pk=selected_restaurant.pk %}"><img src="{% static 'base_app/images/write.png' %}" width="50"></a>
+  {% endfor %}
+</div>
+<div class="plus plus1 plus_hide message1">후기 작성</div>
 
 
 {% endblock %}

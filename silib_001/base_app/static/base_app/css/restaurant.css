@@ -14,11 +14,10 @@
 .profile_set {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .profile_content {
-  margin-right: 95px;
+  margin-left: 5px;
 }
 
 .profile_nickname {
@@ -35,12 +34,16 @@
   margin-right: 1px;
 }
 
-.police {
-  display: flex;
-  align-items: center;
-  width: 45px;
-  justify-content: space-evenly;
+.comment_restaurant {
+  margin-left: auto;
+}
+
+.comment_restaurant > a {
   color: darkred;
+}
+
+.comment_restaurant span {
+    text-decoration: underline;
 }
 
 .comment_content {

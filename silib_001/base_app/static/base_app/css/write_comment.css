@@ -1,0 +1,30 @@
+.write_form {
+  padding: 3% 8%;
+  font-size: 15px;
+}
+
+.form_footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form_title {
+  font-weight: bolder;
+  font-size: 17px;
+}
+
+.cancel {
+  display: inline-block;
+  width: 40px;
+  color: darkred;
+  text-align: left;
+}
+
+#comment_submit {
+  display: inline-block;
+  color: darkred;
+  text-align: right;
+  width: 40px;
+}

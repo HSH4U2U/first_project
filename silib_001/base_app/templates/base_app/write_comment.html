@@ -1,0 +1,28 @@
+{% extends "base_app/base.html" %}
+
+{% block back %}
+  {% load static %}
+  {% for restaurant in selected_restaurant %}
+    <a href="{% url "base_app:restaurant" pk=restaurant.pk %}">
+      <div class ="back">
+        <div><img src="{% static 'base_app/images/back.png' %}" width="13"></div>
+        <div class="back_content">{{ restaurant }}</div>
+      </div>
+    </a>
+  {% endfor %}
+{% endblock %}
+
+{% block content %}
+<div class="main_page">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/write_comment.css' %}">
+  <div class="write_form">
+    <div class="form_footer">
+      <span class="cancel">취소</span>
+      <span class="form_title">후기 작성하기</span>
+      <span id="comment_submit">작성</span>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base_app/base.html" %}
+
+{% block back %}
+{% load static %}
+<a href="{% url "base_app:base" %}">
+  <div class ="back">
+    <div><img src="{% static 'base_app/images/back.png' %}" width="13"></div>
+    <div class="back_content">Home</div>
+  </div>
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="main_page">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/restaurant.css' %}">
+  <div class="comment_list">
+    {% for comment in comments %}
+      <div class="comment">
+        <!--writer-->
+        <div class="profile_set">
+          <div class="profile_image" style="background-color: deepskyblue; width: 35px; height: 35px"></div>
+          <div class="profile_content">
+            <div class="profile_nickname">커서잘될놈</div>
+            <div class="upload_time">
+              <span>{{ comment.created_at|date:"y/m/d" }}</span>
+              <span>{{ comment.created_at|time:"H:i" }}</span>
+            </div>
+          </div>
+          <div class="comment_restaurant"><a href="{% url "base_app:restaurant" pk=comment.restaurant.pk %}">＃<span>{{ comment.restaurant }}</span></a></div>
+        </div>
+
+        <!--comment-->
+        <div class="comment_set">
+          <div class="comment_content">{{ comment.content }}</div>
+            <div class="grade_set">
+              <span class="taste"><b>맛</b><span> {{ comment.taste_grade }}</span></span>
+              <span class="cost"><b>가격</b><span> {{ comment.price_grade }}</span></span>
+              <span class="clean"><b>청결</b><span> {{ comment.clean_grade }}</span></span>
+              <span class="like"><span><img src="{% static 'base_app/images/like.png' %}" width="12"></span><span> 0</span></span>
+              <span class="dislike"><span><img src="{% static 'base_app/images/dislike.png' %}" width="12"></span><span> 0</span></span>
+            </div>
+          <div class="comment_images">
+            <div class="comment_image" style="background-color: limegreen; width: 120px; height: 120px"></div>
+            <div class="comment_image" style="background-color: limegreen; width: 120px; height: 120px"></div>
+            <div class="comment_image" style="background-color: limegreen; width: 120px; height: 120px"></div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="black_background plus_hide"></div>
+<div class="plus" id="plus"><img src="{% static 'base_app/images/plus.png' %}" width="50"></div>
+<div class="plus plus1 plus_hide"><img src="{% static 'base_app/images/write.png' %}" width="50"></div>
+<div class="plus plus1 plus_hide message1">후기 작성</div>
+
+{% endblock %}
