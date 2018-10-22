@@ -150,6 +150,7 @@ def base(request):
 
 def restaurant(request, pk):
     restaurants = Restaurant.objects.all()
+    categorys = Category.objects.all()
     selected_restaurant = Restaurant.objects.filter(pk=pk)
     comments = Comment.objects.filter(restaurant__pk=pk)
 
@@ -206,6 +207,7 @@ def restaurant(request, pk):
 
     ctx = {
         'restaurants': restaurants,
+        'categorys': categorys,
         'selected_restaurant': selected_restaurant,
         'comments': comments,
     }
@@ -214,6 +216,7 @@ def restaurant(request, pk):
 
 def all_comments(request):
     restaurants = Restaurant.objects.all()
+    categorys = Category.objects.all()
     comments = Comment.objects.all()
 
     # 숫자로 받은 값을 grade 시스템으로
@@ -257,6 +260,7 @@ def all_comments(request):
 
     ctx = {
         'restaurants': restaurants,
+        'categorys': categorys,
         'comments': comments,
     }
     return render(request, 'base_app/all_comments.html', ctx)
@@ -264,10 +268,12 @@ def all_comments(request):
 
 def write_comment(request, pk):
     restaurants = Restaurant.objects.all()
+    categorys = Category.objects.all()
     restaurant = Restaurant.objects.filter(pk=pk)
 
     ctx = {
-        'selected_restaurant': restaurant,
         'restaurants': restaurants,
+        'categorys': categorys,
+        'selected_restaurant': restaurant,
     }
     return render(request, 'base_app/write_comment.html', ctx)

@@ -21,11 +21,13 @@
           <div class="main_menu"><img src="{% static 'base_app/images/menu.png' %}" height="25"></div>
         </div>
         <div class="head_right">
+          {% block head_right4 %}
           <div class="all_comments" id="head_right4">
             <a href="{% url "base_app:all_comments" %}">
               <img src="{% static 'base_app/images/comments.png' %}" height="25">
             </a>
           </div>
+          {% endblock %}
           <div class="map" id="head_right3">
             <img src="{% static 'base_app/images/map.png' %}" height="25">
           </div>
@@ -58,9 +60,32 @@
 
       <!--mid-->
       <div class="content_mid">
-        {% block content %}
         <div class="main_page">
             <!--filter-->
+          <div style="display: none" class="filter_page">
+            <form method="get" action="" id="filter_submit">
+              <div class="filter_sort">
+                <div class="filter_sort_title">정렬</div>
+                <div class="filter_sort_content">
+                  <div class="sort" id="sort1">평점순</div>
+                  <div class="sort" id="sort2">인기순</div>
+                  <div class="sort" id="sort3">등록순</div>
+                </div>
+              </div>
+              <div class="filter_category">
+                <div class="filter_category_title">종류</div>
+                <div class="filter_category_content">
+                  {% for category in categorys %}
+                    <div class="category" id="category{{ category.pk }}">
+                      <div>{{ category }}</div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div id="filter_submit_btn">필터 적용</div>
+            </form>
+          </div>
+          <div style="display: none" class="black_block2"></div>
 {#          <div class="category_list">#}
 {#            <span>#}
 {#              <select class="select_bar" id="select_filter">#}
@@ -80,6 +105,7 @@
 {#            </span>#}
 {#          </div>#}
             <!--restaurants-->
+          {% block content %}
           <div class="content_list restaurants">
             {% for restaurant in sort_grade %}
               <div class="restaurant_set {{ restaurant.category }}">
@@ -103,8 +129,8 @@
               </div>
             {% endfor %}
           </div>
+          {% endblock %}
         </div>
-
           <!--plus-->
         <div class="black_background plus_hide"></div>
         <div style="display: none"  class="plus page2" id="plus"><img src="{% static 'base_app/images/plus.png' %}" width="50"></div>
@@ -120,13 +146,10 @@
           <img src="{% static 'base_app/images/filter.png' %}" width="50">
         </div>
         <div class="plus plus3 message3 plus_hide">필터(예정)</div>
-        {% endblock %}
       </div>
-
-
     </div>
-    <div class="swiper-slide content">
 
+    <div class="swiper-slide content">
       <div class="map">
         <!--map-->
         <div id="map"></div>
@@ -197,10 +220,6 @@
     var markers = [];
     var markerCluster= null;
     // TODO: category 해당 restaurant 추출
-    var selected_category = '';
-    $(".category_set").on('click', function () {
-        var selected_category = this.classList[1]
-    });
     function initMap() {
 // map options
             var options = {
@@ -349,6 +368,32 @@ blackBlock.on('click', function () {
     blackBlock.hide();
 });
 
+  // filter 버튼 클릭 시
+var filterButton = $('.filter');
+var filterPage = $('.filter_page');
+var blackBlock2 = $('.black_block2');
+var sort = $('.sort');
+var category = $('.category');
+
+filterButton.on('click', function () {
+    if (filterPage.css('display') === 'none') {
+        filterPage.fadeIn(500);
+        blackBlock2.fadeIn(500);
+    } else {
+        filterPage.fadeOut(500);
+        blackBlock2.fadeOut(500);
+    }
+});
+blackBlock2.on('click', function () {
+    filterPage.fadeOut(500);
+    blackBlock2.fadeOut(500);
+});
+
+sort.on('click', function () {
+    {#this.addClass('sort_selected');#}
+    console.log(this);
+});
+
   // search 버튼 클릭 시
 var search = $('.search');
 var searchBox = $('.search_input');
@@ -356,6 +401,8 @@ var searchText = $('.search_text');
 var whiteBlock = $('.white_block');
 
 search.on('click', function () {
+    filterPage.hide();
+    blackBlock2.hide();
     searchBox.fadeIn(500);
     whiteBlock.fadeIn(500);
     search.on('click', function () {
