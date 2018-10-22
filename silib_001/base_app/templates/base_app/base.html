@@ -17,158 +17,91 @@
   <div class="swiper-wrapper">
     <div class="swiper-slide menu">
       <div class="content_head">
-        {% block back %}
-        <div class="back">
-          <div><img src="{% static 'base_app/images/back.png' %}" width="13"></div>
-          <div class="back_content">공지사항</div>
+        <div class="head_left">
+          <div class="main_menu"><img src="{% static 'base_app/images/menu.png' %}" height="25"></div>
         </div>
-        {% endblock %}
-
-        <div class="logo"><img src="{% static 'base_app/images/logo.png' %}" width="60"></div>
-        <!-- 로그인 전
-        <div class="signup_mypage">Signup</div>
-        <div class="login_logout">Login</div>
-        -->
-        <!-- 로그인 후 -->
-        <div class="log">
-          <div class="signup_mypage">Mypage</div>
-          <div class="login_logout">Logout</div>
+        <div class="head_right">
+          <div class="all_comments" id="head_right4">
+            <a href="{% url "base_app:all_comments" %}">
+              <img src="{% static 'base_app/images/comments.png' %}" height="25">
+            </a>
+          </div>
+          <div class="map" id="head_right3">
+            <img src="{% static 'base_app/images/map.png' %}" height="25">
+          </div>
+          <div class="filter" id="head_right2">
+            <img src="{% static 'base_app/images/filter.png' %}" height="22">
+          </div>
+          <div class="search" id="head_right1">
+            <img src="{% static 'base_app/images/searching.png' %}" height="23">
+          </div>
+        </div>
+        <div style="display: none" class="search_input">
+          <form method="get" action="" id="search_submit">
+            <input class="search_text" type="text" name="search" placeholder="검색어를 입력해주세요." required>
+          </form>
         </div>
       </div>
+      <div style="display: none" class="black_block"></div>
+      <div style="display: none" class="main_menu_bar">
+        <div class="logo"><img src="{% static 'base_app/images/logo.png' %}" width="100"></div>
+        <div class="notice">
+          <div>ver 1.0</div>
+          <div>공지</div>
+        </div>
+        <div class="log">
+          <div>로그인</div>
+          <div>회원가입</div>
+        </div>
+      </div>
+      <div style="display: none" class="white_block"></div>
 
       <!--mid-->
       <div class="content_mid">
         {% block content %}
-  <!-- 첫 번째 페이지 -->
-        <div style="display: none" class="notice_page page0">
-          같이 서울시립대학교를 위해<br/>
-          프로젝트 진행할 사람을 모집합니다.<br/>
-          <br/>
-          UX&UI디자인 한 분<br/>
-          안드로이드, IOS 앱 개발 한 분<br/>
-          <br/>
-          지원은 과거 진행하셨던 작업물을<br/>
-          메일(hsh700788@naver.com)로<br/>
-          보내주시면 됩니다.<br/>
-          <br/>
-          관심있는 분 편하게 연락주시면 됩니다.<br/>
-        </div>
-
-        <div class="main_page page1">
-        <!--categories-->
-          <div class="content_list categorys">
-            <div class="category_set category_all">
-              <div class="category_image">
-{#                <img src="{{ category.category_image.url }}" width="80px"/>#}
-                <div style="display: inline-block; width: 80px; height: 80px; background-color: #9dc9ec"></div>
-              </div>
-              <div class="category_name">
-                전체
-              </div>
-            </div>
-            {% for category in categorys %}
-              <div class="category_set {{ category }}">
-                <div class="category_image">
-                  <img src="{{ category.category_image.url }}" width="80px"/>
+        <div class="main_page">
+            <!--filter-->
+{#          <div class="category_list">#}
+{#            <span>#}
+{#              <select class="select_bar" id="select_filter">#}
+{#                <option selected value="0">등록순</option>#}
+{#                <option value="1">평점순</option>#}
+{#                <option value="2">인기순</option>#}
+{#              </select>#}
+{#            </span>#}
+{#            <span>#}
+{#              <select class="select_bar" id="select_category">#}
+{#                <option selected>카테고리</option>#}
+{#                <option value="전체">전체</option>#}
+{#                {% for category in categorys %}#}
+{#                  <option value="{{ category }}">{{ category }}</option>#}
+{#                {% endfor %}#}
+{#              </select>#}
+{#            </span>#}
+{#          </div>#}
+            <!--restaurants-->
+          <div class="content_list restaurants">
+            {% for restaurant in sort_grade %}
+              <div class="restaurant_set {{ restaurant.category }}">
+                <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
+                <div class="restaurant_content">
+                  <div class="restaurant_content_left">
+                    <div class="restaurant_name">{{ restaurant }}</div>
+                    <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>
+                    <div class="restaurant_star">
+                      <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>
+                      <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>
+                    </div>
+                  </div>
+                  <div class="restaurant_content_right">
+                    <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
+                    <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
+                    <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
+                  </div>
                 </div>
-                <div class="category_name">
-                  {{ category }}
-                </div>
+                <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
               </div>
             {% endfor %}
-          </div>
-        </div>
-
-        <div style="display: none" class="main_page page2">
-          <!--restaurants-->
-          <div class="category_list">
-            <span>
-              <select class="select_bar" id="select_filter">
-                <option selected value="0">등록순</option>
-                <option value="1">평점순</option>
-                <option value="2">인기순</option>
-              </select>
-            </span>
-            <span>
-              <select class="select_bar" id="select_category">
-                <option selected>카테고리</option>
-                <option value="전체">전체</option>
-                {% for category in categorys %}
-                  <option value="{{ category }}">{{ category }}</option>
-                {% endfor %}
-              </select>
-            </span>
-          </div>
-          <div class="content_list restaurants">
-            <div style="width: 100%; height: 100%" class="sort_register">
-              {% for restaurant in restaurants %}
-                <div style="display: none" class="restaurant_set {{ restaurant.category }}">
-                  <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
-                  <div class="restaurant_content">
-                    <div class="restaurant_content_left">
-                      <div class="restaurant_name">{{ restaurant }}</div>
-                      <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>
-                      <div class="restaurant_star">
-                        <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>
-                        <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>
-                      </div>
-                    </div>
-                    <div class="restaurant_content_right">
-                      <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
-                      <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
-                      <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
-                    </div>
-                  </div>
-                  <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
-                </div>
-              {% endfor %}
-            </div>
-            <div style="width: 100%; height: 100%; display: none;" class="sort_grade">
-              {% for restaurant in sort_grade %}
-                <div style="display: none" class="restaurant_set {{ restaurant.category }}">
-                  <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
-                  <div class="restaurant_content">
-                    <div class="restaurant_content_left">
-                      <div class="restaurant_name">{{ restaurant }}</div>
-                      <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>
-                      <div class="restaurant_star">
-                        <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>
-                        <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>
-                      </div>
-                    </div>
-                    <div class="restaurant_content_right">
-                      <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
-                      <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
-                      <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
-                    </div>
-                  </div>
-                  <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
-                </div>
-              {% endfor %}
-            </div>
-            <div style="width: 100%; height: 100%; display: none" class="sort_comments">
-              {% for restaurant in sort_comments %}
-                <div style="display: none" class="restaurant_set {{ restaurant.category }}">
-                  <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
-                  <div class="restaurant_content">
-                    <div class="restaurant_content_left">
-                      <div class="restaurant_name">{{ restaurant }}</div>
-                      <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>
-                      <div class="restaurant_star">
-                        <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>
-                        <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>
-                      </div>
-                    </div>
-                    <div class="restaurant_content_right">
-                      <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
-                      <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
-                      <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
-                    </div>
-                  </div>
-                  <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>
-                </div>
-              {% endfor %}
-            </div>
           </div>
         </div>
 
@@ -187,18 +120,8 @@
           <img src="{% static 'base_app/images/filter.png' %}" width="50">
         </div>
         <div class="plus plus3 message3 plus_hide">필터(예정)</div>
-        <div style="display: none" class="plus search_input">
-          <form method="get" action="" id="search_submit">
-            <input class="search_text" type="text" name="search" placeholder="검색어를 입력해주세요." required>
-          </form>
-        </div>
-        <div class="plus plus4 plus_hide" id="search"><img src="{% static 'base_app/images/search.png' %}" width="50"></div>
-        <div class="plus plus4 message4 plus_hide">검색</div>
         {% endblock %}
       </div>
-      <!--footer-->
-      <div class="content_footer"></div>
-
 
 
     </div>
@@ -230,7 +153,7 @@
 <!-- Initialize Swiper -->
 <script>
   var menuButton = document.querySelector('.menu-button');
-  var logo = document.querySelector('.logo');
+  var map = document.querySelector('.map');
   var swiper = new Swiper('.swiper-container', {
     slidesPerView: 'auto',
     initialSlide: 0,
@@ -248,7 +171,7 @@
           }
         }, true);
 
-        logo.addEventListener('click', function () {
+        map.addEventListener('click', function () {
           if (slider.activeIndex === 0) {
             slider.slideNext();
           } else {
@@ -278,97 +201,6 @@
     $(".category_set").on('click', function () {
         var selected_category = this.classList[1]
     });
-    {#$(document).ready(function () {#}
-    {#    if (selected_category) {#}
-    {#        console.log("{{ category_restaurants }}");#}
-    {#        // map options#}
-    {#        var options = {#}
-    {#            center: {lat: 37.583929, lng: 127.059024},#}
-    {#            zoom: 15,#}
-    {#            mapTypeControl: false,#}
-    {#            streetViewControl: false,#}
-    {#            fullscreenControl: false,#}
-    {#        };#}
-    {##}
-    {#        // new map#}
-    {#        var map = new#}
-    {#        google.maps.Map(document.getElementById('map'), options);#}
-    {#        {% for restaurant in category_restaurants.selected_category %}#}
-    {#            var marker = new google.maps.Marker({#}
-    {#                position: {{ restaurant.locate }},#}
-    {#                map: map,#}
-    {#            });#}
-    {##}
-    {#            // 클릭 시 restaurant 소개 & 센터 오게#}
-    {#            var restaurant_introduction =#}
-    {#                '<div style="width: 300px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +#}
-    {#                ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +#}
-    {#                ' <div class="restaurant_content">\n' +#}
-    {#                '   <div class="restaurant_name">{{ restaurant }}</div>\n' +#}
-    {#                '   <div class="restaurant_star">* 4.4</div>\n' +#}
-    {#                ' </div>\n' +#}
-    {#                ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +#}
-    {#                '</div>';#}
-    {#            marker['infowindow'] = new google.maps.InfoWindow({#}
-    {#                content: restaurant_introduction#}
-    {#            });#}
-    {##}
-    {#            marker.addListener('click', function() {#}
-    {#                map.setZoom(21);#}
-    {#                map.panTo(this.getPosition());#}
-    {#                this['infowindow'].open(map, this);#}
-    {#            });#}
-    {#            markers.push(marker);#}
-    {#        {% endfor %}#}
-    {#    }#}
-    {##}
-    {##}
-    {#    else {#}
-    {#        // map options#}
-    {#        var options = {#}
-    {#            center: {lat: 37.583929, lng: 127.059024},#}
-    {#            zoom: 15,#}
-    {#            mapTypeControl: false,#}
-    {#            streetViewControl: false,#}
-    {#            fullscreenControl: false,#}
-    {#        };#}
-    {##}
-    {#        // new map#}
-    {#        var map = new#}
-    {#        google.maps.Map(document.getElementById('map'), options);#}
-    {#        {% for restaurant in restaurants %}#}
-    {#            var marker = new google.maps.Marker({#}
-    {#                position: {{ restaurant.locate }},#}
-    {#                map: map,#}
-    {#            });#}
-    {##}
-    {#            // 클릭 시 restaurant 소개 & 센터 오게#}
-    {#            var restaurant_introduction =#}
-    {#                '<div style="width: 300px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +#}
-    {#                ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +#}
-    {#                ' <div class="restaurant_content">\n' +#}
-    {#                '   <div class="restaurant_name">{{ restaurant }}</div>\n' +#}
-    {#                '   <div class="restaurant_star">* 4.4</div>\n' +#}
-    {#                ' </div>\n' +#}
-    {#                ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +#}
-    {#                '</div>';#}
-    {#            marker['infowindow'] = new google.maps.InfoWindow({#}
-    {#                content: restaurant_introduction#}
-    {#            });#}
-    {##}
-    {#            marker.addListener('click', function() {#}
-    {#                map.setZoom(21);#}
-    {#                map.panTo(this.getPosition());#}
-    {#                this['infowindow'].open(map, this);#}
-    {#            });#}
-    {#            markers.push(marker);#}
-    {#        {% endfor %}#}
-    {##}
-    {#        var markerCluster = new MarkerClusterer(map, markers,#}
-    {#            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});#}
-    {#    }#}
-    {# });#}
-
     function initMap() {
 // map options
             var options = {
@@ -437,41 +269,6 @@
 
 
 <script>
-  // page 전환
-  $('.back').on('click', function() {
-      if ($('.page0').css('display') !== "none") {
-          $('.page0').hide();
-          $('.page1').fadeIn(1200);
-          $('.back_content').text("공지사항")
-      } else if ($('.page1').css('display') !== "none") {
-          $('.page1').hide();
-          $('.page0').fadeIn(1200);
-          $('.back_content').text("카테고리")
-      } else {
-          $('.page2').hide();
-          $('.page1').fadeIn(1200);
-          $('.back_content').text("공지사항")
-      }
-  });
-
-  // category 해당 restaurant 추출
-  var restaurant_set = $('.restaurant_set');
-  $('.category_set').on('click', function() {
-      $('.back_content').text("카테고리");
-      $('.page1').hide();
-      $('.page2').fadeIn(1200);
-      for (i=0; i<restaurant_set.length; i++) {
-          if (this.classList[1] === $('.restaurant_set')[i].classList[1]) {
-              restaurant_set[i].style.display = "flex"
-          } else {
-              restaurant_set[i].style.display = "none"
-          }
-      }
-      if (this.classList[1] === "category_all") {
-          restaurant_set.css('display', 'flex')
-      }
-  });
-  
   // select bar 클릭 시 배열 변화
   var select_filter = $('#select_filter');
   var select_category = $('#select_category');
@@ -538,21 +335,39 @@ function plusDefault () {
     }, 1500);
 }
 
+  // 메뉴 클릭시
+var menu = $('.main_menu');
+var menuBar = $('.main_menu_bar');
+var blackBlock = $('.black_block');
+
+menu.on('click', function () {
+    menuBar.show();
+    blackBlock.show();
+});
+blackBlock.on('click', function () {
+    menuBar.hide();
+    blackBlock.hide();
+});
+
   // search 버튼 클릭 시
-$('#search').on('click', function () {
-    $('#search').removeClass('plus4').addClass('search_bar_up');
-    $('.message4').hide();
-    setTimeout(function(){
-        $('.search_input').fadeIn(400)
-    }, 2000);
-    $('.plus1').hide();
-    $('.plus2').hide();
-    $('.plus3').hide();
-    if ($('#search').css('bottom') === '450px') {
-        if (document.querySelector(".search_text").value) {
-          $("#search_submit").submit();
+var search = $('.search');
+var searchBox = $('.search_input');
+var searchText = $('.search_text');
+var whiteBlock = $('.white_block');
+
+search.on('click', function () {
+    searchBox.fadeIn(500);
+    whiteBlock.fadeIn(500);
+    search.on('click', function () {
+        if (searchText.val()) {
+            $("#search_submit").submit();
         }
-    }
+    });
+});
+whiteBlock.on('click', function () {
+    searchBox.fadeOut(500);
+    whiteBlock.fadeOut(500);
+    searchText.val('')
 });
 
   // scroll 시 plus 버튼 일시적으로 없애기

@@ -1,15 +1,5 @@
 {% extends "base_app/base.html" %}
 
-{% block back %}
-  {% load static %}
-  <a href="{% url "base_app:base" %}">
-    <div class ="back">
-      <div><img src="{% static 'base_app/images/back.png' %}" width="13"></div>
-      <div class="back_content">Home</div>
-    </div>
-  </a>
-{% endblock %}
-
 {% block content %}
 <div class="main_page">
   {% load static %}
