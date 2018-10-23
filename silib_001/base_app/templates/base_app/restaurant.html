@@ -2,13 +2,26 @@
 
 {% block head_right4 %}
 {% load static %}
-<div class="all_restaurants" id="head_right4">
-  <a href="{% url "base_app:base" %}">
-    <img src="{% static 'base_app/images/restaurants.png' %}" height="25">
+<div class="all_comments" id="head_right3">
+  <a href="{% url "base_app:all_comments" %}">
+    <img src="{% static 'base_app/images/comments.png' %}" height="25">
   </a>
 </div>
 {% endblock %}
 
+{% block head_right23 %}
+<div class="all_restaurants" id="head_right2">
+  <a href="{% url "base_app:base" %}">
+    <img src="{% static 'base_app/images/restaurants.png' %}" height="25">
+  </a>
+</div>
+<div class="map" id="head_right1">
+  <img src="{% static 'base_app/images/map.png' %}" height="25">
+</div>
+{% endblock %}
+
+{% block head_right1 %}
+{% endblock %}
 
 {% block content %}
 {% load static %}

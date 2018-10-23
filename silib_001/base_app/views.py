@@ -53,7 +53,6 @@ def base(request):
                 restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
             restaurant.save()
 
-            print(restaurant.comment_set.all().aggregate(Avg('taste_star')))
         # 필터별 restaurants 분류
         def sum_none(a,b,c):
             if a is None:
@@ -69,6 +68,7 @@ def base(request):
                             , reverse=True)
         sort_comments = sorted(searched_restaurants, key=lambda x: x.comment_set.count(), reverse=True)
         categorys = Category.objects.all()
+        
         ctx = {
             'restaurants': searched_restaurants,
             'search_term': search_term,
@@ -122,7 +122,6 @@ def base(request):
                 restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
             restaurant.save()
 
-            print(restaurant.comment_set.all().aggregate(Avg('taste_star')))
         # 필터별 restaurants 분류
         def sum_none(a,b,c):
             if a is None:
@@ -215,55 +214,114 @@ def restaurant(request, pk):
 
 
 def all_comments(request):
-    restaurants = Restaurant.objects.all()
-    categorys = Category.objects.all()
-    comments = Comment.objects.all()
+    # search 구현
+    if "search" in request.GET:
+        search_term = request.GET["search"]
+        if search_term:
+            searched_comments = Comment.objects.filter(
+                Q(dish_eaten__name__icontains=search_term) |
+                Q(dish_eaten__category__icontains=search_term) |
+                Q(restaurant__name__icontains=search_term) |
+                Q(content__icontains=search_term)
+            ).distinct()
+            restaurants = Restaurant.objects.all()
+            categorys = Category.objects.all()
 
-    # 숫자로 받은 값을 grade 시스템으로
-    def number_to_grade(self):
-        if self > 4:
-            grade = 'A+'
-        elif self >= 3.5:
-            grade = 'A'
-        elif self > 3:
-            grade = 'B+'
-        elif self >= 2.5:
-            grade = 'B'
-        elif self > 2:
-            grade = 'C+'
-        elif self >= 1.5:
-            grade = 'C'
-        elif self > 1:
-            grade = 'D+'
-        elif self >= 0.5:
-            grade = 'D'
-        else:
-            grade = 'F'
-        return grade
-    for comment in comments:
-        comment.taste_grade = number_to_grade(comment.taste_star)
-        comment.price_grade = number_to_grade(comment.price_star)
-        comment.clean_grade = number_to_grade(comment.clean_star)
-        comment.average_grade = number_to_grade(comment.average_star())
-        comment.save()
+            # 숫자로 받은 값을 grade 시스템으로
+            def number_to_grade(self):
+                if self > 4:
+                    grade = 'A+'
+                elif self >= 3.5:
+                    grade = 'A'
+                elif self > 3:
+                    grade = 'B+'
+                elif self >= 2.5:
+                    grade = 'B'
+                elif self > 2:
+                    grade = 'C+'
+                elif self >= 1.5:
+                    grade = 'C'
+                elif self > 1:
+                    grade = 'D+'
+                elif self >= 0.5:
+                    grade = 'D'
+                else:
+                    grade = 'F'
+                return grade
+            for comment in searched_comments:
+                comment.taste_grade = number_to_grade(comment.taste_star)
+                comment.price_grade = number_to_grade(comment.price_star)
+                comment.clean_grade = number_to_grade(comment.clean_star)
+                comment.average_grade = number_to_grade(comment.average_star())
+                comment.save()
 
-    # comment 에 있는 average_star 다 더해서 전체 평점 구하기
-    for restaurant in restaurants:
-        if restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg'] is None:
-            restaurant.average_star = "-"
-        else:
-            taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
-            price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
-            clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
-            restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
-        restaurant.save()
+            # comment 에 있는 average_star 다 더해서 전체 평점 구하기
+            for restaurant in restaurants:
+                if restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg'] is None:
+                    restaurant.average_star = "-"
+                else:
+                    taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
+                    price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
+                    clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
+                    restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+                restaurant.save()
 
-    ctx = {
-        'restaurants': restaurants,
-        'categorys': categorys,
-        'comments': comments,
-    }
-    return render(request, 'base_app/all_comments.html', ctx)
+            ctx = {
+                'restaurants': restaurants,
+                'categorys': categorys,
+                'comments': searched_comments,
+            }
+            return render(request, 'base_app/all_comments.html', ctx)
+    else:
+        restaurants = Restaurant.objects.all()
+        categorys = Category.objects.all()
+        comments = Comment.objects.all()
+
+        # 숫자로 받은 값을 grade 시스템으로
+        def number_to_grade(self):
+            if self > 4:
+                grade = 'A+'
+            elif self >= 3.5:
+                grade = 'A'
+            elif self > 3:
+                grade = 'B+'
+            elif self >= 2.5:
+                grade = 'B'
+            elif self > 2:
+                grade = 'C+'
+            elif self >= 1.5:
+                grade = 'C'
+            elif self > 1:
+                grade = 'D+'
+            elif self >= 0.5:
+                grade = 'D'
+            else:
+                grade = 'F'
+            return grade
+        for comment in comments:
+            comment.taste_grade = number_to_grade(comment.taste_star)
+            comment.price_grade = number_to_grade(comment.price_star)
+            comment.clean_grade = number_to_grade(comment.clean_star)
+            comment.average_grade = number_to_grade(comment.average_star())
+            comment.save()
+
+        # comment 에 있는 average_star 다 더해서 전체 평점 구하기
+        for restaurant in restaurants:
+            if restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg'] is None:
+                restaurant.average_star = "-"
+            else:
+                taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
+                price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
+                clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
+                restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+            restaurant.save()
+
+        ctx = {
+            'restaurants': restaurants,
+            'categorys': categorys,
+            'comments': comments,
+        }
+        return render(request, 'base_app/all_comments.html', ctx)
 
 
 def write_comment(request, pk):

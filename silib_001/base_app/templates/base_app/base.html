@@ -28,15 +28,19 @@
             </a>
           </div>
           {% endblock %}
+          {% block head_right23 %}
           <div class="map" id="head_right3">
             <img src="{% static 'base_app/images/map.png' %}" height="25">
           </div>
           <div class="filter" id="head_right2">
             <img src="{% static 'base_app/images/filter.png' %}" height="22">
           </div>
+          {% endblock %}
+          {% block head_right1 %}
           <div class="search" id="head_right1">
             <img src="{% static 'base_app/images/searching.png' %}" height="23">
           </div>
+          {% endblock %}
         </div>
         <div style="display: none" class="search_input">
           <form method="get" action="" id="search_submit">
@@ -288,40 +292,6 @@
 
 
 <script>
-  // select bar 클릭 시 배열 변화
-  var select_filter = $('#select_filter');
-  var select_category = $('#select_category');
-
-  // 필터로 순서 변경
-  select_filter.change(function () {
-      if (this.value == 0) {
-          $('.sort_register').show();
-          $('.sort_grade').hide();
-          $('.sort_comments').hide();
-      } else if (this.value == 1) {
-          $('.sort_register').hide();
-          $('.sort_grade').show();
-          $('.sort_comments').hide();
-      } else {
-          $('.sort_register').hide();
-          $('.sort_grade').hide();
-          $('.sort_comments').show();
-      }
-  });
-  // 카테고리 선택
-  select_category.change(function () {
-      for (i=0; i<restaurant_set.length; i++) {
-          if (this.value.split(' ')[0] === $('.restaurant_set')[i].classList[1]) {
-              restaurant_set[i].style.display = "flex"
-          } else {
-              restaurant_set[i].style.display = "none"
-          }
-      }
-      if (this.value === "전체") {
-          restaurant_set.css('display', 'flex')
-      }
-  });
-
   // plus 버튼 클릭 시
 $('#plus').on('click', function () {
     if ($('.plus_hide').css('display') === 'none') {
@@ -354,6 +324,7 @@ function plusDefault () {
     }, 1500);
 }
 
+
   // 메뉴 클릭시
 var menu = $('.main_menu');
 var menuBar = $('.main_menu_bar');
@@ -367,6 +338,7 @@ blackBlock.on('click', function () {
     menuBar.hide();
     blackBlock.hide();
 });
+
 
   // filter 버튼 클릭 시
 var filterButton = $('.filter');
@@ -389,10 +361,43 @@ blackBlock2.on('click', function () {
     blackBlock2.fadeOut(500);
 });
 
+ // filter 분류 작업
 sort.on('click', function () {
-    {#this.addClass('sort_selected');#}
-    console.log(this);
+    var a=0;
+    for (i=0; i<3; i++) {
+        if (sort[i].classList[1] === 'sort_selected') {
+            a=1;
+        }
+    }
+    if (a === 0) {
+        sortSelected($(this));
+    } else {
+        sortUnselected(sort);
+        sortSelected($(this));
+    }
 });
+function sortSelected(x) {
+    x.addClass('sort_selected')
+}
+function sortUnselected(x) {
+    x.removeClass('sort_selected')
+}
+
+category.on('click', function () {
+    if ('category_selected' !== this.classList[1]) {
+        categorySelected($(this));
+    } else {
+        categoryUnselected($(this));
+    }
+});
+
+function categorySelected(x) {
+    x.addClass('category_selected')
+}
+function categoryUnselected(x) {
+    x.removeClass('category_selected')
+}
+
 
   // search 버튼 클릭 시
 var search = $('.search');
@@ -416,6 +421,7 @@ whiteBlock.on('click', function () {
     whiteBlock.fadeOut(500);
     searchText.val('')
 });
+
 
   // scroll 시 plus 버튼 일시적으로 없애기
 $('.comment_list').on('touchmove', hideScroll);

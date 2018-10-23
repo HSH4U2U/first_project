@@ -264,7 +264,7 @@ a {
 .sort_selected {
   font-weight: bolder;
   color: darkred;
-  border: darkred 0.8px solid;
+  border: darkred 0.5px solid;
 }
 
 .filter_category {
@@ -301,7 +301,7 @@ a {
 .category_selected {
   font-weight: bolder;
   color: darkred;
-  border: darkred 0.8px solid;
+  border: darkred 0.5px solid;
 }
 
 #filter_submit_btn {
