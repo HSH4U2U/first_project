@@ -2,15 +2,17 @@
 
 {% block head_right4 %}
 {% load static %}
-<div class="all_restaurants" id="head_right3">
-  <a href="{% url "base_app:base" %}">
-    <img src="{% static 'base_app/images/restaurants.png' %}" height="25">
+<div class="all_comments" id="head_right3">
+  <a href="{% url "base_app:all_comments" %}">
+    <img src="{% static 'base_app/images/comments.png' %}" height="25">
   </a>
 </div>
 {% endblock %}
 {% block head_right23 %}
-<div class="map" id="head_right2">
-  <img src="{% static 'base_app/images/map.png' %}" height="25">
+<div class="all_restaurants" id="head_right2">
+  <a href="{% url "base_app:base" %}">
+    <img src="{% static 'base_app/images/restaurants.png' %}" height="25">
+  </a>
 </div>
 {% endblock %}
 
@@ -33,7 +35,7 @@
             <span>{{ comment.created_at|time:"H:i" }}</span>
           </div>
         </div>
-        <div class="comment_restaurant"><a href="{% url "base_app:restaurant" pk=comment.restaurant.pk %}"># <span>{{ comment.restaurant }}</span></a></div>
+        <div class="comment_restaurant"><a href="{% url "base_app:restaurant" pk=comment.restaurant.pk %}">＃<span>{{ comment.restaurant }}</span></a></div>
       </div>
 
       <!--comment-->
@@ -55,4 +57,7 @@
     </div>
   {% endfor %}
 </div>
+{% endblock %}
+
+{% block mapMarker %}
 {% endblock %}
