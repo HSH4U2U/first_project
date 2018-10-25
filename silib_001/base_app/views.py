@@ -354,6 +354,7 @@ def all_comments(request):
             ctx = {
                 'restaurants': restaurants,
                 'categorys': categorys,
+                'search_term': search_term,
                 'comments': searched_comments,
             }
             return render(request, 'base_app/search_comments.html', ctx)

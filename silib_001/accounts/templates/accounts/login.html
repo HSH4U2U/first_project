@@ -11,6 +11,7 @@
 </head>
 <body>
 
+{% if not user.is_authenticated %}
 <div class="center">
   <div class="login_box">
     <div class="logo"><a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/logo.png' %}" width="100"></a></div>
@@ -32,10 +33,14 @@
       </div>
     </form>
   </div>
-
-
-
 </div>
+{% else %}
+<div class="center">
+  <div class="login_box">
+    <div class="logo"><a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/logo.png' %}" width="100"></a></div>
+  </div>
+</div>
+{% endif %}
 
 </body>
 
@@ -45,6 +50,9 @@
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
 <script>
+{% if user.is_authenticated %}
+    alert("비정상적인 접근입니다");
+{% endif %}
 {% if alert_message %}
     alert("{{ alert_message }}");
 {% endif %}

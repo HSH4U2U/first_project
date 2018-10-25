@@ -1,7 +1,11 @@
 {% extends "base_app/base.html" %}
 
-{% block head_right4 %}
+{% block main_title %}
 {% load static %}
+  <div class="main_title">{{ search_term }}</div>
+{% endblock %}
+
+{% block head_right4 %}
 <div class="all_comments" id="head_right4">
   <a href="{% url "base_app:all_comments" %}">
     <img src="{% static 'base_app/images/comments.png' %}" height="25">

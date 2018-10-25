@@ -7,6 +7,7 @@
   <title>bld | 서울시립대 음식점</title>
   <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/base.css' %}">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/swiper.min.css' %}">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 </head>
@@ -16,9 +17,26 @@
 <div class="swiper-container">
   <div class="swiper-wrapper">
     <div class="swiper-slide menu">
+
+          <!--plus-->
+      <div style="display: none;" class="black_block3"></div>
+      <div id="plus"><img src="{% static 'base_app/images/plus.png' %}" width="50"></div>
+      <div class="plus plus1">
+        <a href="#"><img src="{% static 'base_app/images/write.png' %}" width="50"></a>
+      </div>
+      <div class="plus plus1 message1">후기 작성</div>
+      <div class="plus plus2">
+        <img src="{% static 'base_app/images/police.png' %}" width="50">
+      </div>
+      <div class="plus plus2 message2">신고(예정)</div>
+
+
       <div class="content_head">
         <div class="head_left">
           <div class="main_menu"><img src="{% static 'base_app/images/menu.png' %}" height="25"></div>
+{#          {% block main_title %}#}
+{#            <div class="main_title">식당</div>#}
+{#          {% endblock %}#}
         </div>
         <div class="head_right">
           {% block head_right4 %}
@@ -55,11 +73,21 @@
         <div class="logo"><img src="{% static 'base_app/images/logo.png' %}" width="100"></div>
         <div class="notice">
           <div>ver 1.0</div>
-          <div>공지</div>
+          <div>공지(예정)</div>
         </div>
         <div class="log">
-          <div><a href="{% url "accounts:login" %}">로그인</a></div>
-          <div>회원가입</div>
+          {% if not user.is_authenticated %}
+            <div><a href="{% url "accounts:login" %}">로그인</a></div>
+            <div>회원가입</div>
+          {% else %}
+            <div>
+              <form id="logout" action="{% url "accounts:logout" %}" method="POST">
+                {% csrf_token %}
+                <div class="logout">로그아웃</div>
+              </form>
+            </div>
+            <div>먹킷리스트(예정)</div>
+          {% endif %}
         </div>
       </div>
       <div style="display: none" class="white_block"></div>
@@ -122,18 +150,6 @@
           </div>
           {% endblock %}
         </div>
-
-          <!--plus-->
-        <div class="black_block3"></div>
-        <div class="plus" id="plus"><img src="{% static 'base_app/images/plus.png' %}" width="50"></div>
-        <div class="plus plus1 plus_hide">
-          <a href="{% url "base_app:all_comments" %}"><img src="{% static 'base_app/images/comment.png' %}" width="50"></a>
-        </div>
-        <div class="plus plus1 message1 plus_hide">전체 후기</div>
-        <div class="plus plus2 plus_hide">
-          <img src="{% static 'base_app/images/recommend.png' %}" width="50">
-        </div>
-        <div class="plus plus2 message2 plus_hide">오늘 뭐먹?(예정)</div>
       </div>
     </div>
 
@@ -216,7 +232,7 @@
 // map options
             var options = {
                 center: {lat: 37.583929, lng: 127.059024},
-                zoom: 15,
+                zoom: 14,
                 mapTypeControl: false,
                 streetViewControl: false,
                 fullscreenControl: false,
@@ -227,48 +243,90 @@
             var map = new
             google.maps.Map(document.getElementById('map'), options);
             {% for restaurant in restaurants %}
-                var marker = new google.maps.Marker({
-                    position: {{ restaurant.locate }},
-                    map: map,
-                });
+                {#if (markers.length <= 9 | map.getCameraPosition >= 16) {#}
+                    var marker = new google.maps.Marker({
+                        position: {{ restaurant.locate }},
+                        label: {
+                            text: "{{ restaurant.number }}",
+                            color: 'white',
+                        },
+                        map: map,
+                    });
 
-                // 클릭 시 restaurant 소개 & 센터 오게
-                var restaurant_introduction =
-                    '<div style="width: 250px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
-                    ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
-                    ' <div class="restaurant_content">\n' +
-                    '   <div class="restaurant_content_left">\n' +
-                    '     <div class="restaurant_name"><b>{{ restaurant }}</b></div>\n' +
-                    '     <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>\n' +
-                    '     <div class="restaurant_star">\n' +
-                    '       <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>\n' +
-                    '       <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>\n' +
-                    '     </div>\n' +
-                    '   </div>\n' +
-                    '   <div class="restaurant_content_right">\n' +
-                    '     <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>\n' +
-                    '     <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>\n' +
-                    '     <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>\n' +
-                    '   </div>\n' +
-                    ' </div>\n' +
-                    ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
-                    '</div>\n';
+                    // 클릭 시 restaurant 소개 & 센터 오게
+                    var restaurant_introduction =
+                        '<div style="width: 250px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
+                        ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
+                        ' <div class="restaurant_content">\n' +
+                        '   <div class="restaurant_content_left">\n' +
+                        '     <div class="restaurant_name"><b>{{ restaurant }}</b></div>\n' +
+                        '     <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>\n' +
+                        '     <div class="restaurant_star">\n' +
+                        '       <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>\n' +
+                        '       <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>\n' +
+                        '     </div>\n' +
+                        '   </div>\n' +
+                        '   <div class="restaurant_content_right">\n' +
+                        '     <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>\n' +
+                        '     <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>\n' +
+                        '     <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>\n' +
+                        '   </div>\n' +
+                        ' </div>\n' +
+                        ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
+                        '</div>\n';
 
-                marker['infowindow'] = new google.maps.InfoWindow({
-                    content: restaurant_introduction,
-                });
+                    marker['infowindow'] = new google.maps.InfoWindow({
+                        content: restaurant_introduction,
+                    });
 
-                marker.addListener('click', function() {
-                    map.setZoom(21);
-                    map.panTo(this.getPosition());
-                    this['infowindow'].open(map, this);
-                });
-                markers.push(marker);
+                    marker.addListener('click', function() {
+                        map.setZoom(19);
+                        map.panTo(this.getPosition());
+                        this['infowindow'].open(map, this);
+                    });
+
+                    markers.push(marker);
+                    if (markers.length > 10) {
+                        marker.setVisible(false);
+                    }
+                {# }#}
             {% endfor %}
 
-            var markerCluster = new MarkerClusterer(map, markers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            /* Change markers on zoom */
+            google.maps.event.addListener(map, 'zoom_changed', function() {
+                var zoom = map.getZoom();
+                var len = markers.length;
+                function hideShow(len, x) {
+                    if (len >= x) {
+                        for (i = x; i < len; i++) {
+                            markers[i].setVisible(false);
+                        }
+                        for (i = 0; i < x; i++) {
+                            markers[i].setVisible();
+                        }
+                    }
+                }
+                // iterate over markers and call setVisible
+                if (zoom >= 19) {
+                    for (i = 0; i < len; i++) {
+                        markers[i].setVisible();
+                    }
+                } else if (zoom >= 18) {
+                    hideShow(len, 30)
+                } else if (zoom >= 17) {
+                    hideShow(len, 20)
+                } else if (zoom >= 16) {
+                    hideShow(len, 15)
+                } else if (zoom >= 14) {
+                    hideShow(len, 10)
+                } else {
+                    hideShow(len, 5)
+                }
+            });
+            {#var markerCluster = new MarkerClusterer(map, markers,#}
+            {#    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});#}
     }
+
 
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbX8bL78zKMX1D7viqLsXJikPwaLB8omQ&callback=initMap"
@@ -281,35 +339,33 @@
 
 <script>
   // plus 버튼 클릭 시
-$('#plus').on('click', function () {
-    if ($('.plus_hide').css('display') === 'none') {
-        $('#plus').css('-webkit-transform', 'rotate(45deg)');
-        $('#plus').css('-webkit-transition', '-webkit-transform 1s');
-        $('.plus').children('img').css('box-shadow', 'none');
-        $('.plus_hide').fadeIn(800);
-        $('.search_input').hide();
-    } else {
+var plusButton = $('#plus');
+var blackBlack3 = $('.black_block3');
+var plusGroup = $('.plus');
+
+plusButton.on('click', function () {
+    if (plusButton.css('z-index') === '6') {
         plusDefault()
+    } else if (plusButton.css('-webkit-transform') !== 'rotate(45deg)') {
+        plusButton.css('-webkit-transform', 'rotate(45deg)');
+        plusButton.css('-webkit-transition', '-webkit-transform 1s');
+        plusButton.children('img').css('box-shadow', 'none');
+        plusGroup.fadeIn(800);
+        plusButton.css('z-index', '6');
+        blackBlack3.fadeIn(800);
     }
 });
-
-{#$('.black_block3').on('click', function () {#}
-{#  plusDefault()#}
-{# });#}
+blackBlack3.on('click', function () {
+  plusDefault()
+ });
 
 function plusDefault () {
-    $('#plus').css('-webkit-transform', 'rotate(0deg)');
-    $('#plus').css('-webkit-transition', '-webkit-transform 1s');
-    $('.plus_hide').fadeOut(0);
-    $('#plus').children('img').css('box-shadow', '#999 0 3px 6px');
-    $('#search').removeClass('search_bar_up').addClass('plus4');
-    $('.search_input').hide();
-    setTimeout(function(){
-      $('.search_input').hide()
-    }, 1000);
-    setTimeout(function(){
-      $('.search_input').hide()
-    }, 1500);
+    plusButton.css('-webkit-transform', 'rotate(0deg)');
+    plusButton.css('-webkit-transition', '-webkit-transform 1s');
+    plusButton.children('img').css('box-shadow', '#999 0 3px 6px');
+    blackBlack3.hide();
+    plusGroup.hide();
+    plusButton.css('z-index', '1');
 }
 
 
@@ -317,16 +373,23 @@ function plusDefault () {
 var menu = $('.main_menu');
 var menuBar = $('.main_menu_bar');
 var blackBlock = $('.black_block');
+var logo = $('.logo');
 
 menu.on('click', function () {
     menuBar.show();
     blackBlock.show();
 });
-blackBlock.on('click', function () {
+logo.on('click', menuHide);
+blackBlock.on('click', menuHide);
+function menuHide() {
     menuBar.hide();
     blackBlock.hide();
-});
+}
 
+  // logout 클릭 시
+$('.logout').on('click', function () {
+    $('#logout').submit();
+});
 
   // filter 버튼 클릭 시
 var filterButton = $('.filter');

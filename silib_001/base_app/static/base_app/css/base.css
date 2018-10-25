@@ -143,6 +143,14 @@ a {
   z-index: 4;
 }
 
+.main_title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  margin-left: 12px;
+  margin-bottom: 4px;
+}
+
 .head_left, .head_right {
   display: flex;
   align-items: center;
@@ -449,35 +457,40 @@ a {
 /*plus*/
 .black_block3 {
   position: absolute;
-  background-color: black;
-  opacity: 0.7;
   width: 100%;
   height: 100%;
+  background-color: black;
+  opacity: 0.7;
+  z-index: 5;
 }
 
 #plus {
-  bottom: 30px;
-  z-index: 2;
-}
-
-.plus {
   position: absolute;
   display: block;
   right: 30px;
+  bottom: 30px;
+  z-index: 1;
+}
+
+#plus img {
+  box-shadow: #999 0 3px 6px;
+  background-color: white;
+  border-radius: 25px;
+}
+
+.plus {
+  display: none;
+  position: absolute;
+  right: 30px;
+  z-index: 6;
 }
 
 .plus img {
   background-color: white;
   border-radius: 25px;
-  box-shadow: #999 0 3px 6px;
 }
 
 .plus a img {
-  box-shadow: none;
-}
-
-.plus_hide {
-  display: none;
   box-shadow: none;
 }
 

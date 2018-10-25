@@ -21,3 +21,9 @@ def login(request):
         'alert_message': alert_message,
     }
     return render(request, 'accounts/login.html', ctx)
+
+
+def view_logout(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('base_app:base')

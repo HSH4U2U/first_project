@@ -1,5 +1,12 @@
 {% extends "base_app/base.html" %}
 
+{% block main_title %}
+{% load static %}
+  {% for restaurant in selected_restaurant %}
+    <div class="main_title">{{ restaurant.name }}</div>
+  {% endfor %}
+{% endblock %}
+
 {% block head_right4 %}
 {% load static %}
 <div class="all_comments" id="head_right3">
