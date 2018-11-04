@@ -1,0 +1,11 @@
+{% autoescape off %}
+안녕하세요, {{ user.last_name }}님!
+서울시립대학교 음식점 정보 제공 서비스, BLD에 가입해주셔서 정말 감사합니다! ^^
+
+아래 링크를 클릭하면 회원가입 인증이 완료됩니다.
+http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+
+
+P.S. {{ user.last_name }}님께서 대학 생활 중 필요하신 웹 서비스나
+불편하다고 느끼신 웹 서비스 있으시면, 새롭게 만들어 보려고 합니다(아래 설문 조사에 참여해주세요!)
+{% endautoescape %}

@@ -5,18 +5,7 @@
   <div class="main_title">후기</div>
 {% endblock %}
 
-{% block head_right4 %}
-{% load static %}
-<div class="all_restaurants" id="head_right3">
-  <a href="{% url "base_app:base" %}">
-    <img src="{% static 'base_app/images/restaurants.png' %}" height="25">
-  </a>
-</div>
-{% endblock %}
 {% block head_right23 %}
-<div class="map" id="head_right2">
-  <img src="{% static 'base_app/images/map.png' %}" height="25">
-</div>
 {% endblock %}
 
 {% block search %}
@@ -60,4 +49,7 @@
     </div>
   {% endfor %}
 </div>
+{% endblock %}
+
+{% block mapMarker %}
 {% endblock %}

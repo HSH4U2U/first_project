@@ -1,0 +1,43 @@
+{% extends "accounts/login.html" %}
+
+{% block log %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/css/login.css' %}">
+
+  <div class="signup_box">
+    <div class="logo"><a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/logo.png' %}" width="100"></a></div>
+    <form action="" method="POST">
+      {% csrf_token %}
+  {#    {{ form.as_p }}#}
+  {#    <button style="background: black; height: 10px" type="submit"></button>#}
+      <div class="id">
+        <input class="signup_required" type="text" name="username" placeholder="시립대 포털 ID@uos.ac.kr"
+               required />
+      </div>
+      <div class="password">
+        <input class="signup_required" type="password1" name="password1" placeholder="비밀번호"
+               required/>
+      </div>
+      <div class="password">
+        <input class="signup_required" type="password2" name="password2" placeholder="비밀번호(확인)"
+               required/>
+      </div>
+      <div class="nickname">
+        <input class="signup_required" type="text" name="nickname" placeholder="닉네임(8자 이하)"
+               required/>
+      </div>
+      <button class="signup_required signup_btn">회원가입</button>
+    </form>
+  </div>
+
+
+  <!--jquery-->
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script>
+  // TODO: 이메일 형식에 맞아야만 가입 가능하게
+</script>
+
+{% endblock %}

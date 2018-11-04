@@ -412,7 +412,7 @@ def all_comments(request):
 def write_comment(request, pk):
     restaurants = Restaurant.objects.all()
     categorys = Category.objects.all()
-    restaurant = Restaurant.objects.filter(pk=pk)
+    restaurant = Restaurant.objects.filter(pk=pk).first()
 
     ctx = {
         'restaurants': restaurants,

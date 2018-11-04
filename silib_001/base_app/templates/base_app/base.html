@@ -18,45 +18,38 @@
   <div class="swiper-wrapper">
     <div class="swiper-slide menu">
 
-          <!--plus-->
-      <div style="display: none;" class="black_block3"></div>
-      <div id="plus"><img src="{% static 'base_app/images/plus.png' %}" width="50"></div>
-      <div class="plus plus1">
-        <a href="#"><img src="{% static 'base_app/images/write.png' %}" width="50"></a>
-      </div>
-      <div class="plus plus1 message1">후기 작성</div>
-      <div class="plus plus2">
-        <img src="{% static 'base_app/images/police.png' %}" width="50">
-      </div>
-      <div class="plus plus2 message2">신고(예정)</div>
+{#          <!--plus-->#}
+{#      <div style="display: none;" class="black_block3"></div>#}
+{#      <div id="plus"><img src="{% static 'base_app/images/plus.png' %}" width="50"></div>#}
+{#      <div class="plus plus1">#}
+{#        <a href="#"><img src="{% static 'base_app/images/write.png' %}" width="50"></a>#}
+{#      </div>#}
+{#      <div class="plus plus1 message1">후기 작성</div>#}
+{#      <div class="plus plus2">#}
+{#        <img src="{% static 'base_app/images/police.png' %}" width="50">#}
+{#      </div>#}
+{#      <div class="plus plus2 message2">신고(예정)</div>#}
 
 
       <div class="content_head">
         <div class="head_left">
-          <div class="main_menu"><img src="{% static 'base_app/images/menu.png' %}" height="25"></div>
+          <div class="main_menu"><img src="{% static 'base_app/images/logo.png' %}" height="23"></div>
 {#          {% block main_title %}#}
 {#            <div class="main_title">식당</div>#}
 {#          {% endblock %}#}
         </div>
         <div class="head_right">
-          {% block head_right4 %}
-          <div class="all_comments" id="head_right4">
-            <a href="{% url "base_app:all_comments" %}">
-              <img src="{% static 'base_app/images/comments.png' %}" height="25">
-            </a>
-          </div>
-          {% endblock %}
           {% block head_right23 %}
           <div class="map" id="head_right3">
-            <img src="{% static 'base_app/images/map.png' %}" height="25">
+            <img src="{% static 'base_app/images/map.png' %}" height="22">
           </div>
           <div class="filter" id="head_right2">
-            <img src="{% static 'base_app/images/filter.png' %}" height="22">
+            <img src="{% static 'base_app/images/filter.png' %}" height="19">
           </div>
           {% endblock %}
           {% block head_right1 %}
           <div class="search" id="head_right1">
-            <img src="{% static 'base_app/images/searching.png' %}" height="23">
+            <img src="{% static 'base_app/images/searching.png' %}" height="20">
           </div>
           {% endblock %}
         </div>
@@ -78,7 +71,7 @@
         <div class="log">
           {% if not user.is_authenticated %}
             <div><a href="{% url "accounts:login" %}">로그인</a></div>
-            <div>회원가입</div>
+            <div><a href="{% url "accounts:signup" %}">회원가입</a></div>
           {% else %}
             <div>
               <form id="logout" action="{% url "accounts:logout" %}" method="POST">
@@ -150,6 +143,12 @@
           </div>
           {% endblock %}
         </div>
+      </div>
+      <div class="content_footer">
+        <a href="{% url "base_app:all_comments" %}"><img src="{% static 'base_app/images/comment2.png' %}" height="25"></a>
+        <a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/restaurants.png' %}" height="25"></a>
+        <a href="#"><img src="{% static 'base_app/images/write1.png' %}" height="25"></a>
+        <a href="#"><img src="{% static 'base_app/images/comments.png' %}" height="25"></a>
       </div>
     </div>
 
@@ -317,7 +316,7 @@
                     hideShow(len, 20)
                 } else if (zoom >= 16) {
                     hideShow(len, 15)
-                } else if (zoom >= 14) {
+                } else if (zoom >= 15) {
                     hideShow(len, 10)
                 } else {
                     hideShow(len, 5)
@@ -494,18 +493,8 @@ whiteBlock.on('click', function () {
     whiteBlock.fadeOut(500);
     searchText.val('')
 });
-
-
-  // scroll 시 plus 버튼 일시적으로 없애기
-$('.comment_list').on('touchmove', hideScroll);
-$('.restaurants').on('touchmove', hideScroll);
-$('.comment_list').on('scroll', hideScroll);
-$('.restaurants').on('scroll', hideScroll);
-
-function hideScroll() {
-    $('#plus').hide().fadeIn(1500)
-}
-
 </script>
+{% block js %}
+{% endblock %}
 </body>
 </html>

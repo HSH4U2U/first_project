@@ -21,6 +21,7 @@ input {
   border: none;
   padding: 0 5px;
   margin: 0;
+  font-size: 11px;
 }
 button {
   width: 100%;
@@ -44,7 +45,7 @@ input:-webkit-autofill {
   justify-content: center;
 }
 
-.login_box {
+.login_box, .signup_box {
   width: 75%;
   height: 50%;
   margin-top: 10%;
@@ -55,7 +56,7 @@ input:-webkit-autofill {
 }
 
 @media (min-width: 320px) {
-  .login_box {
+  .login_box, .signup_box {
     max-width: 240px;
   }
 }
@@ -64,18 +65,22 @@ input:-webkit-autofill {
   margin-bottom: 15px;
 }
 
-.login_required {
+.signup_box .logo {
+  margin-bottom: 30px;
+}
+
+.login_required, .signup_required {
   height: 32px;
   width: 100%;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   border: #303030 solid 0.5px;
 }
 
-.id, .password {
+.id, .password, .nickname {
   width: 95%;
 }
 
-.login_btn {
+.login_btn, .signup_btn {
   width: 95%;
   background-color: #303030;
   color: white;
@@ -93,3 +98,4 @@ input:-webkit-autofill {
 .signup {
   font-weight: bold;
 }
+

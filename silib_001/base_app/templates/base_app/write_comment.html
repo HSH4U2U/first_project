@@ -1,13 +1,74 @@
 {% extends "base_app/base.html" %}
 
+{% block head_right23 %}
+{% endblock %}
+
+{% block head_right1 %}
+{% endblock %}
+
 {% block content %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'base_app/css/write_comment.css' %}">
-<div class="write_form">
-  <div class="form_footer">
-    <span class="cancel">취소</span>
-    <span class="form_title">후기 작성하기</span>
-    <span id="comment_submit">작성</span>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<div class="write_form_set">
+<form>
+  <div class="selected_restaurant">
+    <div class="selected_restaurant_title">식당:</div>
+    <select class="form-control" id="form-control1">
+      <option selected>{{ selected_restaurant }}</option>
+      {% for restaurant in restaurants %}
+        <option>{{ restaurant }}</option>
+      {% endfor %}
+    </select>
   </div>
+  <div class="star">
+    <div class="taste_star">
+      <div class="star_title">맛</div>
+      <select class="form-control" id="star_title">
+        <option selected>A</option>
+        <option>B</option>
+        <option>C</option>
+        <option>D</option>
+        <option>F</option>
+      </select>
+    </div>
+    <div class="taste_star">
+      <div class="star_title">맛</div>
+      <select class="form-control" id="star_title">
+        <option selected>A</option>
+        <option>B</option>
+        <option>C</option>
+        <option>D</option>
+        <option>F</option>
+      </select>
+    </div>
+    <div class="taste_star">
+      <div class="star_title">맛</div>
+      <select class="form-control" id="star_title">
+        <option selected>A</option>
+        <option>B</option>
+        <option>C</option>
+        <option>D</option>
+        <option>F</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group" id="form-group1">
+    <textarea class="form-control" rows="10" id="form-control2" placeholder="후기 (300자 이내)"></textarea>
+  </div>
+  <div class="form-group" id="form-group2">
+    <input type="file" id="exampleInputFile">
+  </div>
+  <button type="submit" id="comment_submit">작성</button>
+</form>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+
+</script>
 {% endblock %}
