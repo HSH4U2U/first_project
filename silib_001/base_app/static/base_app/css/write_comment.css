@@ -1,17 +1,37 @@
-.selected_restaurant {
+.selected_restaurant, .eaten_dish {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 10px 0;
 }
 
-.selected_restaurant_title {
-  width: 20%;
+.selected_restaurant_title, .eaten_dish_title {
+  width: 15%;
   font-size: 13px;
 }
 
-#form-control1 {
-  width: 70% !important;
+#form-control1, #form-control2 {
+  width: 75% !important;
+  border: #e1e1e1 !important;
+  font-size: 12px;
+}
+
+.star {
+  font-size: 13px;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 5%;
+}
+
+.taste_star, .price_star, .clean_star {
+  width: 30%;
+  display: flex;
+  align-items: center;
+}
+
+.star_number {
   border: #e1e1e1 !important;
 }
 
@@ -20,9 +40,10 @@
   justify-content: center;
 }
 
-#form-control2 {
+#form-control3 {
   width: 90% !important;
   border: #e1e1e1 !important;
+  font-size: 13px;
 }
 
 #form-group2 {

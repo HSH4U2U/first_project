@@ -73,20 +73,15 @@ class Comment(models.Model):
     price_star = models.IntegerField(verbose_name='가격 만족도',)
     taste_star = models.IntegerField(verbose_name='맛 만족도',)
     clean_star = models.IntegerField(verbose_name='청결성 만족도',)
-
-
-    # 먹은 음식의 종류랑 평점 연결이 자유롭게 어떻게..!?
-    # dish_eaten = models.CharField(max_length=20, verbose_name='먹은 음식',)
-    dish_eaten = models.ForeignKey(Menu, null=True, blank=True, on_delete=models.CASCADE, verbose_name='먹은 음식',)
-
-    content = models.CharField(max_length=150, verbose_name='100자평',)
-
+    dish_eaten = models.CharField(max_length=30, blank=True, null=True, verbose_name='먹은 음식',)
+    content = models.CharField(max_length=160, verbose_name='150자평', blank=True, null=True,)
+    food_image = models.ImageField(upload_to="blog/%Y/%m/%d", blank=True, null=True,)
     STATUS_CHOICES = (
         ('꼭 다시 먹는다', '꼭 다시 먹는다'),
         ('잘 모르겠다', '잘 모르겠다'),
         ('절대 안 먹는다', '절대 안 먹는다'),
     )
-    try_again = models.TextField(choices=STATUS_CHOICES, verbose_name='다시 먹을 지 여부',)
+    try_again = models.TextField(choices=STATUS_CHOICES, verbose_name='다시 먹을 지 여부', null=True, blank=True,)
     # police = models.IntegerField(verbose_name='신고 수',)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -6,25 +6,27 @@
 
   <div class="signup_box">
     <div class="logo"><a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/logo.png' %}" width="100"></a></div>
-    <form action="" method="POST">
+    <form action="" method="POST" autocomplete="off">
       {% csrf_token %}
   {#    {{ form.as_p }}#}
   {#    <button style="background: black; height: 10px" type="submit"></button>#}
       <div class="id">
         <input class="signup_required" type="text" name="username" placeholder="시립대 포털 ID@uos.ac.kr"
-               required />
+               required pattern="^[a-z0-9._%+-]+@uos.ac.kr$" oninvalid="this.setCustomValidity('서울시립대학교 이메일 형식만 아이디로 사용가능합니다.')"
+               oninput="this.setCustomValidity('')" autocomplete="off"/>
       </div>
       <div class="password">
-        <input class="signup_required" type="password1" name="password1" placeholder="비밀번호"
-               required/>
+        <input class="signup_required" type="password" name="password1" placeholder="비밀번호"
+               required autocomplete="off"/>
       </div>
       <div class="password">
-        <input class="signup_required" type="password2" name="password2" placeholder="비밀번호(확인)"
-               required/>
+        <input class="signup_required" type="password" name="password2" placeholder="비밀번호(확인)"
+               required autocomplete="off"/>
       </div>
       <div class="nickname">
         <input class="signup_required" type="text" name="nickname" placeholder="닉네임(8자 이하)"
-               required/>
+               required pattern="^[a-zA-Z0-9가-힣]{1,8}$" oninvalid="this.setCustomValidity('8자 이하만 가능합니다.')"
+               oninput="this.setCustomValidity('')"  autocomplete="off"/>
       </div>
       <button class="signup_required signup_btn">회원가입</button>
     </form>

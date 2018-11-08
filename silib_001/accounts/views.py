@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as logedin, logout, authenticate
-from django.contrib.auth.decorators import login_required
 from .forms import SignupForm
 from django.http import HttpResponse
 from django.utils.encoding import force_bytes, force_text
@@ -61,7 +60,13 @@ def signup(request):
             to_email = form.cleaned_data.get('username')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
-            return HttpResponse('학교 이메일로 인증 링크가 전송되었습니다.')
+            return HttpResponse(
+                '<div style="font-size: 40px; width: 100%; height:100%; display:flex; text-align:center; '
+                'justify-content: center; align-items: center;">'
+                '<a href="https://portal.uos.ac.kr/user/login.face">'
+                '학교 이메일</a><span>로 인증 링크가 전송되었습니다.</span>'
+                '</div>'
+            )
     else:
         form = SignupForm()
         ctx = {'form': form}

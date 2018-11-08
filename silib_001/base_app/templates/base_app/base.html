@@ -33,10 +33,9 @@
 
       <div class="content_head">
         <div class="head_left">
-          <div class="main_menu"><img src="{% static 'base_app/images/logo.png' %}" height="23"></div>
-{#          {% block main_title %}#}
-{#            <div class="main_title">식당</div>#}
-{#          {% endblock %}#}
+          {% block head_left %}
+          <div class="main_menu">식당</div>
+          {% endblock %}
         </div>
         <div class="head_right">
           {% block head_right23 %}
@@ -145,10 +144,16 @@
         </div>
       </div>
       <div class="content_footer">
-        <a href="{% url "base_app:all_comments" %}"><img src="{% static 'base_app/images/comment2.png' %}" height="25"></a>
-        <a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/restaurants.png' %}" height="25"></a>
-        <a href="#"><img src="{% static 'base_app/images/write1.png' %}" height="25"></a>
-        <a href="#"><img src="{% static 'base_app/images/comments.png' %}" height="25"></a>
+        {% block footer %}
+        <a href="{% url "base_app:all_comments" %}"><img src="{% static 'base_app/images/comment1.png' %}" width="26"></a>
+        <a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/restaurant2.png' %}" width="27"></a>
+        {% if user.is_authenticated %}
+          <a href="{% url "base_app:write_comment" pk=1 %}"><img src="{% static 'base_app/images/write1.png' %}" width="27"></a>
+        {% else %}
+          <a href="{% url "accounts:login" %}"><img src="{% static 'base_app/images/write1.png' %}" width="27"></a>
+        {% endif %}
+        <a href="#"><img src="{% static 'base_app/images/gear1.png' %}" width="27"></a>
+        {% endblock %}
       </div>
     </div>
 
@@ -337,37 +342,6 @@
 
 
 <script>
-  // plus 버튼 클릭 시
-var plusButton = $('#plus');
-var blackBlack3 = $('.black_block3');
-var plusGroup = $('.plus');
-
-plusButton.on('click', function () {
-    if (plusButton.css('z-index') === '6') {
-        plusDefault()
-    } else if (plusButton.css('-webkit-transform') !== 'rotate(45deg)') {
-        plusButton.css('-webkit-transform', 'rotate(45deg)');
-        plusButton.css('-webkit-transition', '-webkit-transform 1s');
-        plusButton.children('img').css('box-shadow', 'none');
-        plusGroup.fadeIn(800);
-        plusButton.css('z-index', '6');
-        blackBlack3.fadeIn(800);
-    }
-});
-blackBlack3.on('click', function () {
-  plusDefault()
- });
-
-function plusDefault () {
-    plusButton.css('-webkit-transform', 'rotate(0deg)');
-    plusButton.css('-webkit-transition', '-webkit-transform 1s');
-    plusButton.children('img').css('box-shadow', '#999 0 3px 6px');
-    blackBlack3.hide();
-    plusGroup.hide();
-    plusButton.css('z-index', '1');
-}
-
-
   // 메뉴 클릭시
 var menu = $('.main_menu');
 var menuBar = $('.main_menu_bar');
@@ -493,6 +467,25 @@ whiteBlock.on('click', function () {
     whiteBlock.fadeOut(500);
     searchText.val('')
 });
+
+// 스크롤바 움직일 때 제어
+var content = $('.content_mid');
+
+content.on('mouseenter', scrollShow);
+content.on('touchstart', scrollShow);
+content.on('touchmove', scrollShow);
+content.on('mouseleave', scrollHide);
+content.on('touchend', scrollHide);
+
+function scrollHide() {
+    setTimeout(function(){
+        $('html').addClass('hide-scrollbar');
+    }, 700);
+}
+function scrollShow() {
+    $('html').removeClass('hide-scrollbar');
+}
+
 </script>
 {% block js %}
 {% endblock %}

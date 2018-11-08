@@ -35,14 +35,20 @@
 
 .comment_restaurant {
   margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: right;
 }
 
-.comment_restaurant > a {
+.comment_restaurant a {
   color: darkred;
+  width: 100%;
 }
 
 .comment_restaurant span {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .comment_content {
@@ -64,17 +70,13 @@
 }
 
 .comment_images {
-  height: 100%;
-  width: 250px;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-::-webkit-scrollbar {
-    height: 2px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .comment_image {
-  margin-right: 5px;
   display: inline-block;
+  width: 100%;
 }

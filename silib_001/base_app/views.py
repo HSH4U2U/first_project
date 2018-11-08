@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Restaurant, Category, Comment
+from .forms import CommentForm
 from django.db.models import Q, Avg
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -408,8 +410,19 @@ def all_comments(request):
     }
     return render(request, 'base_app/all_comments.html', ctx)
 
-
+@login_required
 def write_comment(request, pk):
+    form = CommentForm()
+    if request.method == 'POST':
+        form = CommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.ip = request.META['REMOTE_ADDR']
+            post.save()
+            return redirect('base_app:all_comments')
+        else:
+            form = CommentForm()
+
     restaurants = Restaurant.objects.all()
     categorys = Category.objects.all()
     restaurant = Restaurant.objects.filter(pk=pk).first()
@@ -418,5 +431,6 @@ def write_comment(request, pk):
         'restaurants': restaurants,
         'categorys': categorys,
         'selected_restaurant': restaurant,
+        'form': form,
     }
     return render(request, 'base_app/write_comment.html', ctx)

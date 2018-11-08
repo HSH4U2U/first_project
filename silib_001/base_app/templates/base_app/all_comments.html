@@ -1,8 +1,8 @@
 {% extends "base_app/base.html" %}
 
-{% block main_title %}
+{% block head_left %}
 {% load static %}
-  <div class="main_title">후기</div>
+  <div class="main_menu">후기</div>
 {% endblock %}
 
 {% block head_right23 %}
@@ -27,7 +27,12 @@
             <span>{{ comment.created_at|time:"H:i" }}</span>
           </div>
         </div>
-        <div class="comment_restaurant"><a href="{% url "base_app:restaurant" pk=comment.restaurant.pk %}"># <span>{{ comment.restaurant }}</span></a></div>
+        <div class="comment_restaurant">
+          <a href="{% url "base_app:restaurant" pk=comment.restaurant.pk %}"># <span>{{ comment.restaurant }}</span></a>
+          {% if comment.dish_eaten %}
+          <a  href="#"><{{ comment.dish_eaten }}></a>
+          {% endif %}
+        </div>
       </div>
 
       <!--comment-->
@@ -41,15 +46,23 @@
             <span class="dislike"><span><img src="{% static 'base_app/images/dislike.png' %}" width="12"></span><span> 0</span></span>
           </div>
         <div class="comment_images">
-          <div class="comment_image" style="background-color: limegreen; width: 120px; height: 120px"></div>
-          <div class="comment_image" style="background-color: limegreen; width: 120px; height: 120px"></div>
-          <div class="comment_image" style="background-color: limegreen; width: 120px; height: 120px"></div>
+          {% if comment.food_image %}
+          <img class="comment_image" src="{{ comment.food_image.url }}">
+          {% endif %}
         </div>
       </div>
     </div>
   {% endfor %}
 </div>
 {% endblock %}
+
+{% block footer %}
+<a href="{% url "base_app:all_comments" %}"><img src="{% static 'base_app/images/comment2.png' %}" width="26"></a>
+<a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/restaurant1.png' %}" width="27"></a>
+<a href="{% url "base_app:write_comment" pk=1 %}"><img src="{% static 'base_app/images/write1.png' %}" width="27"></a>
+<a href="#"><img src="{% static 'base_app/images/gear1.png' %}" width="27"></a>
+{% endblock %}
+
 
 {% block mapMarker %}
 {% endblock %}

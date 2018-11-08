@@ -1,5 +1,10 @@
 {% extends "base_app/base.html" %}
 
+{% block head_left %}
+{% load static %}
+  <div class="main_menu">후기 작성</div>
+{% endblock %}
+
 {% block head_right23 %}
 {% endblock %}
 
@@ -14,61 +19,79 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <div class="write_form_set">
-<form>
+<form method='post' action='' enctype="multipart/form-data" id="comment">
+  {% csrf_token %}
   <div class="selected_restaurant">
     <div class="selected_restaurant_title">식당:</div>
-    <select class="form-control" id="form-control1">
-      <option selected>{{ selected_restaurant }}</option>
+    <select class="form-control" id="form-control1" name="restaurant">
+      <option value="{{ selected_restaurant.pk }}" selected>{{ selected_restaurant }}</option>
       {% for restaurant in restaurants %}
-        <option>{{ restaurant }}</option>
+        <option value="{{ restaurant.pk }}">{{ restaurant }}</option>
       {% endfor %}
     </select>
   </div>
+  <div class="eaten_dish">
+    <div class="eaten_dish_title">음식:</div>
+    <input type="text" class="form-control" id="form-control2"
+           placeholder="먹은 음식 (메뉴판 이름으로)" required name="dish_eaten"/>
+  </div>
   <div class="star">
     <div class="taste_star">
-      <div class="star_title">맛</div>
-      <select class="form-control" id="star_title">
-        <option selected>A</option>
-        <option>B</option>
-        <option>C</option>
-        <option>D</option>
-        <option>F</option>
+      <select class="form-control star_number" id="star_number1" name="taste_star">
+        <option selected>맛</option>
+        <option value="4">A</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
       </select>
     </div>
-    <div class="taste_star">
-      <div class="star_title">맛</div>
-      <select class="form-control" id="star_title">
-        <option selected>A</option>
-        <option>B</option>
-        <option>C</option>
-        <option>D</option>
-        <option>F</option>
+    <div class="price_star">
+      <select class="form-control star_number" id="star_number2" name="price_star">
+        <option selected>가격</option>
+        <option value="4">A</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
       </select>
     </div>
-    <div class="taste_star">
-      <div class="star_title">맛</div>
-      <select class="form-control" id="star_title">
-        <option selected>A</option>
-        <option>B</option>
-        <option>C</option>
-        <option>D</option>
-        <option>F</option>
+    <div class="clean_star">
+      <select class="form-control star_number" id="star_number3" name="clean_star">
+        <option selected>청결</option>
+        <option value="4">A</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="0">F</option>
       </select>
     </div>
   </div>
   <div class="form-group" id="form-group1">
-    <textarea class="form-control" rows="10" id="form-control2" placeholder="후기 (300자 이내)"></textarea>
+    <textarea class="form-control" rows="7" id="form-control3"
+              placeholder="후기 (150자 이내, 작성 필수X)" name="content"></textarea>
   </div>
   <div class="form-group" id="form-group2">
-    <input type="file" id="exampleInputFile">
+    <input type="file" accept="image/*" id="exampleInputFile" name="food_image">
   </div>
-  <button type="submit" id="comment_submit">작성</button>
+  <input type="hidden" name="try_again">
+  <button type="submit" id="comment_submit">작성하기</button>
 </form>
 </div>
 {% endblock %}
 
+
+{% block footer %}
+<a href="{% url "base_app:all_comments" %}"><img src="{% static 'base_app/images/comment1.png' %}" width="26"></a>
+<a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/restaurant1.png' %}" width="27"></a>
+<a href="{% url "base_app:write_comment" pk=1 %}"><img src="{% static 'base_app/images/write2.png' %}" width="27"></a>
+<a href="#"><img src="{% static 'base_app/images/gear1.png' %}" width="27"></a>
+{% endblock %}
+
+{% block mapMarker %}
+{% endblock %}
+
 {% block js %}
 <script>
-
 </script>
 {% endblock %}

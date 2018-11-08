@@ -143,17 +143,15 @@ a {
   z-index: 4;
 }
 
-.main_title {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 22px;
-  font-weight: 900;
-  margin-left: 12px;
-  margin-bottom: 4px;
-}
-
 .head_left, .head_right {
   display: flex;
   align-items: center;
+}
+
+.main_menu {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
 }
 
 .head_right > div {
@@ -347,12 +345,6 @@ a {
 
 
 /*restaurants*/
-.category_list {
-  font-size: 16px;
-  padding: 6px 0;
-  border-bottom: #DCDCDC 0.5px solid;
-}
-
 .restaurants {
   font-size: 12px;
   overflow-y: scroll;
@@ -362,18 +354,23 @@ a {
 /*scroll design*/
 /* width */
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 2px;
     height: 3px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: white;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #999;
+}
+
+/*hidden*/
+.hide-scrollbar ::-webkit-scrollbar-thumb {
+    visibility : hidden;
 }
 
 /* Handle on hover */
