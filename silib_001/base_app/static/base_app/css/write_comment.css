@@ -1,3 +1,7 @@
+.main_menu_bar {
+  width: 70% !important;
+}
+
 .selected_restaurant, .eaten_dish {
   display: flex;
   align-items: center;
@@ -59,7 +63,7 @@
 }
 
 #comment_submit {
-  margin-top: 15px;
+  margin-top: 25px;
   background-color: white;
   border: none;
 }

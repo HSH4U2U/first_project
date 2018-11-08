@@ -34,7 +34,13 @@
       <div class="content_head">
         <div class="head_left">
           {% block head_left %}
-          <div class="main_menu">식당</div>
+          {% if search_term %}
+            <div class="main_menu">‘{{ search_term }}’ <span>의 검색 결과</span></div>
+          {% elif sort_term %}
+            <div class="main_menu">분류 결과</div>
+          {% else %}
+            <div class="main_menu">식당</div>
+          {% endif %}
           {% endblock %}
         </div>
         <div class="head_right">

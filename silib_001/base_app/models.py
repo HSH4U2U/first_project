@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.urls import reverse
 
 
@@ -59,7 +60,7 @@ class Restaurant(models.Model):
 
 
 class Comment(models.Model):
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='작성자')   # Profile의 user와 같은 거?? 따로 부름??
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='작성자', null=True,)   # Profile의 user와 같은 거?? 따로 부름??
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, verbose_name='해당 가게')
 
     # TODO: 구글 평점 가져오기

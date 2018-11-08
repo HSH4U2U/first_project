@@ -2,7 +2,11 @@
 
 {% block head_left %}
 {% load static %}
-  <div class="main_menu">후기</div>
+  {% if search_term %}
+    <div class="main_menu">‘{{ search_term }}’ <span>의 검색 결과</span></div>
+  {% else %}
+    <div class="main_menu">후기</div>
+  {% endif %}
 {% endblock %}
 
 {% block head_right23 %}
@@ -19,9 +23,15 @@
     <div class="comment">
       <!--writer-->
       <div class="profile_set">
-        <div class="profile_image" style="background-color: deepskyblue; width: 35px; height: 35px"></div>
+      {% if comment.author.is_superuser or comment.author.is_staff %}
+        <div class="profile_image"><img src="{% static 'base_app/images/profile1.png' %}" width="35"></div>
         <div class="profile_content">
-          <div class="profile_nickname">커서잘될놈</div>
+          <div class="profile_nickname" style="color: rgb(255,129,129)">{{ comment.author.last_name }}</div>
+      {% else %}
+        <div class="profile_image"><img src="{% static 'base_app/images/profile2.png' %}" width="35"></div>
+        <div class="profile_content">
+          <div class="profile_nickname" style="color: rgb(129,129,255)">{{ comment.author.last_name }}</div>
+      {% endif %}
           <div class="upload_time">
             <span>{{ comment.created_at|date:"y/m/d" }}</span>
             <span>{{ comment.created_at|time:"H:i" }}</span>

@@ -154,6 +154,11 @@ a {
   font-weight: 900;
 }
 
+.main_menu span {
+  font-size: 15px;
+  font-weight: 600;
+}
+
 .head_right > div {
   padding: 0 8px;
   border-right: #DCDCDC solid 0.1px;

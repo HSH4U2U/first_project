@@ -85,6 +85,7 @@ def base(request):
             restaurant.save()
 
         ctx = {
+            'sort_term': sort_term,
             'categorys': categorys,
             'restaurants': restaurants,
         }
@@ -165,7 +166,7 @@ def base(request):
             'restaurants': sort_grade,
             'categorys': categorys,
         }
-        return render(request, 'base_app/search_restaurant.html', ctx)
+        return render(request, 'base_app/base.html', ctx)
 
     restaurants = Restaurant.objects.all()
     categorys = Category.objects.all()
@@ -306,8 +307,7 @@ def all_comments(request):
         search_term = request.GET["search"]
         if search_term:
             searched_comments = Comment.objects.filter(
-                Q(dish_eaten__name__icontains=search_term) |
-                Q(dish_eaten__category__icontains=search_term) |
+                Q(dish_eaten__icontains=search_term) |  # TODO: 나중에 이거 모델 수정 시 수정하기
                 Q(restaurant__name__icontains=search_term) |
                 Q(content__icontains=search_term)
             ).distinct()
@@ -359,7 +359,7 @@ def all_comments(request):
                 'search_term': search_term,
                 'comments': searched_comments,
             }
-            return render(request, 'base_app/search_comments.html', ctx)
+            return render(request, 'base_app/all_comments.html', ctx)
     restaurants = Restaurant.objects.all()
     categorys = Category.objects.all()
     comments = Comment.objects.all()
@@ -418,6 +418,7 @@ def write_comment(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.ip = request.META['REMOTE_ADDR']
+            post.author = request.user
             post.save()
             return redirect('base_app:all_comments')
         else:
