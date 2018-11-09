@@ -216,7 +216,6 @@ def base(request):
         return a + b + c
     def comment_star(x, y):
         return x.comment_set.all().aggregate(Avg(y))[y + '__avg']
-
     sort_grade = sorted(restaurants,
                         key=lambda x: sum_none(comment_star(x, 'taste_star'), comment_star(x,'price_star'), comment_star(x,'clean_star'))
                         , reverse=True)
@@ -292,8 +291,29 @@ def restaurant(request, pk):
             restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
         restaurant.save()
 
+
+    # 필터별 restaurants 분류
+    def sum_none(a,b,c):
+        if a is None:
+            a = 0
+            b = 0
+            c = 0
+        return a + b + c
+    def comment_star(x, y):
+        return x.comment_set.all().aggregate(Avg(y))[y + '__avg']
+    sort_grade = sorted(restaurants,
+                        key=lambda x: sum_none(comment_star(x, 'taste_star'), comment_star(x,'price_star'), comment_star(x,'clean_star'))
+                        , reverse=True)
+
+    # restaurant numbering
+    i = 1
+    for restaurant in sort_grade:
+        restaurant.number = i
+        i += 1
+        restaurant.save()
+
     ctx = {
-        'restaurants': restaurants,
+        'restaurants': sort_grade,
         'categorys': categorys,
         'selected_restaurant': selected_restaurant,
         'comments': comments,
@@ -340,6 +360,8 @@ def all_comments(request):
                 comment.price_grade = number_to_grade(comment.price_star)
                 comment.clean_grade = number_to_grade(comment.clean_star)
                 comment.average_grade = number_to_grade(comment.average_star())
+                if comment.content is None:
+                    comment.content = ''
                 comment.save()
 
             # comment 에 있는 average_star 다 더해서 전체 평점 구하기
@@ -390,6 +412,8 @@ def all_comments(request):
         comment.price_grade = number_to_grade(comment.price_star)
         comment.clean_grade = number_to_grade(comment.clean_star)
         comment.average_grade = number_to_grade(comment.average_star())
+        if comment.content is None:
+            comment.content = ''
         comment.save()
 
     # comment 에 있는 average_star 다 더해서 전체 평점 구하기
@@ -414,9 +438,16 @@ def all_comments(request):
 def write_comment(request, pk):
     form = CommentForm()
     if request.method == 'POST':
+
         form = CommentForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
+
+            # TODO: 나중에 한 가게에 중복 후기 못 쓰게 코드!
+            # for comment in request.user.comment_set.all():
+            #     if comment.restaurant == post.restaurant:
+            #         return redirect('base_app:write_comment', pk)
+
             post.ip = request.META['REMOTE_ADDR']
             post.author = request.user
             post.save()

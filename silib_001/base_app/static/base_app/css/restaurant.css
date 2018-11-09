@@ -4,10 +4,11 @@
 }
 
 .comment {
-  padding-bottom: 16px;
-  border-bottom: #DCDCDC solid 0.1px;
-  margin-bottom: 16px;
+  margin-bottom: 25px;
+  padding: 10px 10px 0 10px;
   text-align: left;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.09);
 }
 
 .profile_set {
@@ -78,5 +79,5 @@
 
 .comment_image {
   display: inline-block;
-  width: 100%;
+  width: calc(100% + 20px);
 }

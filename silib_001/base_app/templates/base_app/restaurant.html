@@ -36,7 +36,7 @@
 <div class="comment_list">
   {% for restaurant in selected_restaurant %}
     <div class="restaurant_set {{ restaurant.category }}">
-      <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
+      <div class="restaurant_image"></div>
       <div class="restaurant_content">
         <div class="restaurant_content_left">
           <div class="restaurant_name">{{ restaurant }}</div>
@@ -47,12 +47,12 @@
           </div>
         </div>
         <div class="restaurant_content_right">
-          <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
+          <div><span>혼밥 </span><span>{% if restaurant.is_card_possible %}{{ restaurant.is_card_possible }}{% else %}-{% endif %}</span></div>
           <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
           <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
         </div>
       </div>
-      <div class="comments">위<br>치<br>보<br>기</div>
+      <div class="comments">메<br>뉴<br>보<br>기</div>
     </div>
   {% endfor %}
   {% for comment in comments %}
@@ -113,123 +113,46 @@
 </div>
 {% endblock %}
 
-{% block mapMarker %}
-  <!--map setting -->
-  <script>
-    var markers = [];
-    var markerCluster= null;
-    function initMap() {
-        // map options
-        var options = {
-          {% for restaurant in selected_restaurant %}
-            center: {{ restaurant.locate }},
-          {% endfor %}
-            zoom: 21,
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: false,
-            maxZoom: 21,
-            };
 
-        // new map
-        var map = new
-        google.maps.Map(document.getElementById('map'), options);
-          {% for restaurant in restaurants %}
-              var marker = new google.maps.Marker({
-                  position: {{ restaurant.locate }},
-                  map: map,
-              });
-
-              // 클릭 시 restaurant 소개 & 센터 오게
-              var restaurant_introduction =
-                    '<div style="width: 250px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
-                    ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
-                    ' <div class="restaurant_content">\n' +
-                    '   <div class="restaurant_content_left">\n' +
-                    '     <div class="restaurant_name"><b>{{ restaurant }}</b></div>\n' +
-                    '     <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>\n' +
-                    '     <div class="restaurant_star">\n' +
-                    '       <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>\n' +
-                    '       <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>\n' +
-                    '     </div>\n' +
-                    '   </div>\n' +
-                    '   <div class="restaurant_content_right">\n' +
-                    '     <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>\n' +
-                    '     <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>\n' +
-                    '     <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>\n' +
-                    '   </div>\n' +
-                    ' </div>\n' +
-                    ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
-                    '</div>\n';
-              marker['infowindow'] = new google.maps.InfoWindow({
-                  content: restaurant_introduction
-              });
-
-              marker.addListener('click', function() {
-                  map.setZoom(21);
-                  map.panTo(this.getPosition());
-                  this['infowindow'].open(map, this);
-              });
-              markers.push(marker);
-          {% endfor %}
-
-              // 해당 restaurant 소개 바로 뜨게
-          {% for restaurant in selected_restaurant %}
-              var selectedMarker = new google.maps.Marker({
-                  position: {{ restaurant.locate }},
-                  map: map,
-                  zIndex: 19980206,
-                  label: {
-                      text: '★',
-                      color: 'white',
-                      font_weight: 'bolder',
-                  },
-              });
-
-              // 클릭 시 restaurant 소개 & 센터 오게
-              var restaurant_introduction =
-                    '<div style="width: 250px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
-                    ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
-                    ' <div class="restaurant_content">\n' +
-                    '   <div class="restaurant_content_left">\n' +
-                    '     <div class="restaurant_name"><b>{{ restaurant }}</b></div>\n' +
-                    '     <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>\n' +
-                    '     <div class="restaurant_star">\n' +
-                    '       <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>\n' +
-                    '       <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>\n' +
-                    '     </div>\n' +
-                    '   </div>\n' +
-                    '   <div class="restaurant_content_right">\n' +
-                    '     <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>\n' +
-                    '     <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>\n' +
-                    '     <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>\n' +
-                    '   </div>\n' +
-                    ' </div>\n' +
-                    ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
-                    '</div>\n';
-              var infowindow = new google.maps.InfoWindow({
-                  content: restaurant_introduction
-              });
-
-              window.onload = function () {
-                  infowindow.open(map, selectedMarker);
-              };
-
-              selectedMarker.addListener('click', function() {
-                  map.setZoom(21);
-                  map.panTo(this.getPosition());
-                  infowindow.open(map, selectedMarker);
-              });
-          {% endfor %}
+<!--map 설정-->
+{% block mapZoom %}
+  {% for restaurant in selected_restaurant %}
+    center: {{ restaurant.locate }},
+  {% endfor %}
+  zoom: 19,
+{% endblock %}
 
 
-      {# var markerCluster = new MarkerClusterer(map, markers,#}
-      {#      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});#}
-      }
+{% block newMarker %}
+      // 해당 restaurant 소개 바로 뜨게
+  {% for restaurant in selected_restaurant %}
+      var selectedMarker = new google.maps.Marker({
+          position: {{ restaurant.locate }},
+          map: map,
+          zIndex: 19980206,
+          label: {
+              text: "★",
+              fontSize: '12px',
+              fontWeight: '900',
+              color: 'rgb(255,129,129)',
+          },
+          icon: image1,
+      });
 
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbX8bL78zKMX1D7viqLsXJikPwaLB8omQ&callback=initMap"
-  async defer></script>
-  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-  </script>
+      // 클릭 시 restaurant 소개 & 센터 오게
+      var restaurant_introduction =
+          '    <div style="display: flex; align-items: center; justify-content: space-between; width: 160px; height: 40px; margin-top: 5px; text-align: left; font-weight: 900">\n' +
+          '      <div>{{ restaurant }}<span style="color: rgb(255,192,0)">({{ restaurant.average_star }})</span></div>\n' +
+          '      <a href="{% url "base_app:restaurant" pk=restaurant.pk %}" style="all: unset; text-decoration: underline black">후기 / 정보</a>\n' +
+          '    </div>';
+      var infowindow = new google.maps.InfoWindow({
+          content: restaurant_introduction
+      });
+
+      selectedMarker.addListener('click', function() {
+          map.setZoom(21);
+          map.panTo(this.getPosition());
+          infowindow.open(map, selectedMarker);
+      });
+  {% endfor %}
 {% endblock %}

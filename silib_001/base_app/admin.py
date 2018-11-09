@@ -12,7 +12,7 @@ class MenuAdmin(admin.ModelAdmin):
 
 @admin.register(Restaurant)
 class RestaurantAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'menu', 'open_to_close', 'is_package_possible', 'is_delivery_possible', 'is_eating_lonely_possible', 'detail', 'latitude', 'longitude', 'register']
+    list_display = ['name', 'category', 'menu', 'open_to_close', 'is_package_possible', 'is_delivery_possible', 'is_card_possible', 'detail', 'latitude', 'longitude', 'register']
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):

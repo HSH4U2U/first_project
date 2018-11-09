@@ -2,6 +2,19 @@
   width: 70% !important;
 }
 
+.write_form_set {
+  height: 100%;
+}
+
+#comment {
+  max-height: 90%;
+  background-color: white;
+  padding: 3% 0 5% 1%;
+  margin: 10px 4% 0 5%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 10px 0 rgba(0, 0, 0, 0.09);
+  overflow-y: scroll;
+}
+
 .selected_restaurant, .eaten_dish {
   display: flex;
   align-items: center;
@@ -63,7 +76,7 @@
 }
 
 #comment_submit {
-  margin-top: 25px;
+  margin-top: 20px;
   background-color: white;
   border: none;
 }

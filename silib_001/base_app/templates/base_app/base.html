@@ -126,7 +126,7 @@
           <div class="content_list restaurants">
             {% for restaurant in restaurants %}
               <div class="restaurant_set {{ restaurant.category }}">
-                <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>
+                <div class="restaurant_image"></div>
                 <div class="restaurant_content">
                   <div class="restaurant_content_left">
                     <div class="restaurant_name">{{ restaurant.number }}. {{ restaurant }}</div>
@@ -137,7 +137,7 @@
                     </div>
                   </div>
                   <div class="restaurant_content_right">
-                    <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>
+                    <div><span>카드 </span><span>{% if restaurant.is_card_possible %}{{ restaurant.is_card_possible }}{% else %}-{% endif %}</span></div>
                     <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>
                     <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>
                   </div>
@@ -241,49 +241,49 @@
     function initMap() {
 // map options
             var options = {
+                {% block mapZoom %}
                 center: {lat: 37.583929, lng: 127.059024},
                 zoom: 14,
+                {% endblock %}
                 mapTypeControl: false,
                 streetViewControl: false,
                 fullscreenControl: false,
                 maxZoom: 21,
             };
-
             // new map
-            var map = new
-            google.maps.Map(document.getElementById('map'), options);
+            var map = new google.maps.Map(document.getElementById('map'), options);
+            var image1 = {
+                url: '{% static 'base_app/images/marker1.png' %}',
+                scaledSize: new google.maps.Size(40, 40),
+                labelOrigin: new google.maps.Point(20, 11),
+            };
+            var image2 = {
+                url: '{% static 'base_app/images/marker2.png' %}',
+                scaledSize: new google.maps.Size(40, 40),
+                labelOrigin: new google.maps.Point(20, 13),
+            };
             {% for restaurant in restaurants %}
                 {#if (markers.length <= 9 | map.getCameraPosition >= 16) {#}
                     var marker = new google.maps.Marker({
                         position: {{ restaurant.locate }},
+                        {% if restaurant.number %}
                         label: {
                             text: "{{ restaurant.number }}",
-                            color: 'white',
+                            fontSize: '12px',
+                            fontWeight: '900',
+                            color: 'rgb(129,129,255)',
                         },
+                        {% endif %}
                         map: map,
+                        icon: image2,
                     });
 
                     // 클릭 시 restaurant 소개 & 센터 오게
                     var restaurant_introduction =
-                        '<div style="width: 250px; border-bottom: none; margin-bottom: 8px; margin-top: 16px; margin-right: 10px;" class="restaurant_set">\n' +
-                        ' <div style="height: 60px; width: 60px; background-color: #9dc9ec" class="restaurant_image"></div>\n' +
-                        ' <div class="restaurant_content">\n' +
-                        '   <div class="restaurant_content_left">\n' +
-                        '     <div class="restaurant_name"><b>{{ restaurant }}</b></div>\n' +
-                        '     <div class="restaurant_info">010-0000-0000<br>0요일 오후 0시 ~ 오후 0시</div>\n' +
-                        '     <div class="restaurant_star">\n' +
-                        '       <b>{{ restaurant.average_star }}</b><span class="comment_count"> {{ restaurant.comment_count }}</span>\n' +
-                        '       <span>맛 {{ restaurant.taste_star }}  가격 {{ restaurant.price_star }}  청결 {{ restaurant.clean_star }}</span>\n' +
-                        '     </div>\n' +
-                        '   </div>\n' +
-                        '   <div class="restaurant_content_right">\n' +
-                        '     <div><span>혼밥 </span><span>{% if restaurant.is_eating_lonely_possible %}{{ restaurant.is_eating_lonely_possible }}{% else %}-{% endif %}</span></div>\n' +
-                        '     <div><span>포장 </span><span>{% if restaurant.is_package_possible %}{{ restaurant.is_package_possible }}{% else %}-{% endif %}</span></div>\n' +
-                        '     <div><span>배달 </span><span>{% if restaurant.is_delivery_possible %}{{ restaurant.is_delivery_possible }}{% else %}-{% endif %}</span></div>\n' +
-                        '   </div>\n' +
-                        ' </div>\n' +
-                        ' <a href="{% url "base_app:restaurant" pk=restaurant.pk %}"><div class="comments">후<br>기<br>보<br>기</div></a>\n' +
-                        '</div>\n';
+                        '    <div style="display: flex; align-items: center; justify-content: space-between; width: 160px; height: 40px; margin-top: 5px; text-align: left; font-weight: 900">\n' +
+                        '      <div>{{ restaurant }}<span style="color: rgb(255,192,0)">({{ restaurant.average_star }})</span></div>\n' +
+                        '      <a href="{% url "base_app:restaurant" pk=restaurant.pk %}" style="all: unset; text-decoration: underline black">후기 / 정보</a>\n' +
+                        '    </div>';
 
                     marker['infowindow'] = new google.maps.InfoWindow({
                         content: restaurant_introduction,
@@ -333,6 +333,8 @@
                     hideShow(len, 5)
                 }
             });
+            {% block newMarker %}
+            {% endblock %}
             {#var markerCluster = new MarkerClusterer(map, markers,#}
             {#    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});#}
     }
@@ -491,6 +493,11 @@ function scrollHide() {
 function scrollShow() {
     $('html').removeClass('hide-scrollbar');
 }
+
+var more = $('.content_footer > a:last-child');
+more.on('click', function () {
+    alert('아직 준비 중인 서비스 입니다.')
+})
 
 </script>
 {% block js %}

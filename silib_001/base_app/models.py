@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+from imagekit.processors import Thumbnail
+from imagekit.models import ProcessedImageField
 
 
 # Create your models here.
@@ -41,7 +43,7 @@ class Restaurant(models.Model):
     )
     is_package_possible = models.TextField(blank=True, choices=STATUS_CHOICES, verbose_name='포장 가능 여부', )
     is_delivery_possible = models.TextField(blank=True, choices=STATUS_CHOICES, verbose_name='배달 가능 여부', )
-    is_eating_lonely_possible = models.TextField(blank=True, choices=STATUS_CHOICES, verbose_name='혼밥 가능 여부', )
+    is_card_possible = models.TextField(blank=True, choices=STATUS_CHOICES, verbose_name='카드 가능 여부', )
     detail = models.TextField(blank=True, verbose_name='음식점 설명',)
     latitude = models.CharField(max_length=20,)
     longitude = models.CharField(max_length=20,)
@@ -76,7 +78,12 @@ class Comment(models.Model):
     clean_star = models.IntegerField(verbose_name='청결성 만족도',)
     dish_eaten = models.CharField(max_length=30, blank=True, null=True, verbose_name='먹은 음식',)
     content = models.CharField(max_length=160, verbose_name='150자평', blank=True, null=True,)
-    food_image = models.ImageField(upload_to="blog/%Y/%m/%d", blank=True, null=True,)
+    food_image = ProcessedImageField(
+        upload_to="blog/%Y/%m/%d", blank=True, null=True,
+        # processors=[Thumbnail(500, 500)],  # 처리할 작업 목룍
+        format='JPEG',  # 최종 저장 포맷
+        options={'quality': 70}  # 저장 옵션
+    )
     STATUS_CHOICES = (
         ('꼭 다시 먹는다', '꼭 다시 먹는다'),
         ('잘 모르겠다', '잘 모르겠다'),
