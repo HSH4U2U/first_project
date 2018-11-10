@@ -13,6 +13,13 @@
 </head>
 <body>
 
+<!--시작 시 로고 띄우기-->
+{% block start_html %}
+<div class="bld">
+  <img style="margin: 0 0 20px 5px" src="{% static 'base_app/images/logo.png' %}" width="150px">
+</div>
+{% endblock %}
+
 <!-- Swiper -->
 <div class="swiper-container">
   <div class="swiper-wrapper">
@@ -350,6 +357,18 @@
 
 
 <script>
+{% block start_js %}
+  // 시작 시 로고 띄우기
+$(document).ready(function() {
+    setTimeout(function () {
+        $('.bld').fadeOut(1500);
+        setTimeout(function () {
+            $('.bld').css('display', 'none');
+        }, 1500);
+    }, 2000);
+});
+{% endblock %}
+
   // 메뉴 클릭시
 var menu = $('.main_menu');
 var menuBar = $('.main_menu_bar');

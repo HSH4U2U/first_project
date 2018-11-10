@@ -113,6 +113,10 @@
 </div>
 {% endblock %}
 
+{% block start_html %}
+{% endblock %}
+{% block start_js %}
+{% endblock %}
 
 <!--map 설정-->
 {% block mapZoom %}
@@ -121,7 +125,6 @@
   {% endfor %}
   zoom: 19,
 {% endblock %}
-
 
 {% block newMarker %}
       // 해당 restaurant 소개 바로 뜨게

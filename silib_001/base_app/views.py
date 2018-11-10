@@ -53,7 +53,7 @@ def base(request):
                 restaurant.taste_star = number_to_grade(taste_star)
                 restaurant.price_star = number_to_grade(price_star)
                 restaurant.clean_star = number_to_grade(clean_star)
-                restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+                restaurant.average_star = number_to_grade(taste_star/2 + price_star/4 + clean_star/4 + 0.2)
             restaurant.save()
 
         # 필터별 restaurants 분류
@@ -62,7 +62,7 @@ def base(request):
                 a = 0
                 b = 0
                 c = 0
-            return a + b + c
+            return a/2 + b/4 + c/4
         def comment_star(x, y):
             return x.comment_set.all().aggregate(Avg(y))[y + '__avg']
 
@@ -136,7 +136,7 @@ def base(request):
                 restaurant.taste_star = number_to_grade(taste_star)
                 restaurant.price_star = number_to_grade(price_star)
                 restaurant.clean_star = number_to_grade(clean_star)
-                restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+                restaurant.average_star = number_to_grade(taste_star/2 + price_star/4 + clean_star/4 + 0.2)
             restaurant.save()
 
         # 필터별 restaurants 분류
@@ -145,7 +145,7 @@ def base(request):
                 a = 0
                 b = 0
                 c = 0
-            return a + b + c
+            return a/2 + b/4 + c/4
         def comment_star(x, y):
             return x.comment_set.all().aggregate(Avg(y))[y + '__avg']
 
@@ -204,7 +204,7 @@ def base(request):
             restaurant.taste_star = number_to_grade(taste_star)
             restaurant.price_star = number_to_grade(price_star)
             restaurant.clean_star = number_to_grade(clean_star)
-            restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+            restaurant.average_star = number_to_grade(taste_star/2 + price_star/4 + clean_star/4 + 0.2)
         restaurant.save()
 
     # 필터별 restaurants 분류
@@ -213,7 +213,7 @@ def base(request):
             a = 0
             b = 0
             c = 0
-        return a + b + c
+        return a/2 + b/4 + c/4
     def comment_star(x, y):
         return x.comment_set.all().aggregate(Avg(y))[y + '__avg']
     sort_grade = sorted(restaurants,
@@ -276,7 +276,7 @@ def restaurant(request, pk):
             taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
             price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
             clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
-            restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+            restaurant.average_star = number_to_grade(taste_star/2 + price_star/4 + clean_star/4 + 0.2)
         restaurant.save()
     for restaurant in selected_restaurant:
         if restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg'] is None:
@@ -288,7 +288,7 @@ def restaurant(request, pk):
             restaurant.taste_star = number_to_grade(taste_star)
             restaurant.price_star = number_to_grade(price_star)
             restaurant.clean_star = number_to_grade(clean_star)
-            restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+            restaurant.average_star = number_to_grade(taste_star/2 + price_star/4 + clean_star/4 + 0.2)
         restaurant.save()
 
 
@@ -298,7 +298,7 @@ def restaurant(request, pk):
             a = 0
             b = 0
             c = 0
-        return a + b + c
+        return a/2 + b/4 + c/4
     def comment_star(x, y):
         return x.comment_set.all().aggregate(Avg(y))[y + '__avg']
     sort_grade = sorted(restaurants,
@@ -372,7 +372,7 @@ def all_comments(request):
                     taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
                     price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
                     clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
-                    restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+                    restaurant.average_star = number_to_grade(taste_star/2 + price_star/4 + clean_star/4 + 0.2)
                 restaurant.save()
 
             ctx = {
@@ -424,7 +424,7 @@ def all_comments(request):
             taste_star = restaurant.comment_set.all().aggregate(Avg('taste_star'))['taste_star__avg']
             price_star = restaurant.comment_set.all().aggregate(Avg('price_star'))['price_star__avg']
             clean_star = restaurant.comment_set.all().aggregate(Avg('clean_star'))['clean_star__avg']
-            restaurant.average_star = number_to_grade(taste_star + price_star + clean_star)
+            restaurant.average_star = number_to_grade(taste_star/2 + price_star/4 + clean_star/4 + 0.2)
         restaurant.save()
 
     ctx = {
