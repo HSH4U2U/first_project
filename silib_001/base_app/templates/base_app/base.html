@@ -159,7 +159,7 @@
       <div class="content_footer">
         {% block footer %}
         <a href="{% url "base_app:all_comments" %}"><img src="{% static 'base_app/images/comment1.png' %}" width="26"></a>
-        <a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/restaurant2.png' %}" width="27"></a>
+        <a href="#"><img src="{% static 'base_app/images/restaurant2.png' %}" width="27"></a>
         {% if user.is_authenticated %}
           <a href="{% url "base_app:write_comment" pk=1 %}"><img src="{% static 'base_app/images/write1.png' %}" width="27"></a>
         {% else %}
@@ -348,10 +348,10 @@
 
 
   </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbX8bL78zKMX1D7viqLsXJikPwaLB8omQ&callback=initMap"
+  <script src={{ GOOGLE_MAP_KEY }}
   async defer></script>
-  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-  </script>
+{#  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">#}
+{#  </script>#}
 {% endblock %}
 
 
@@ -359,13 +359,17 @@
 <script>
 {% block start_js %}
   // 시작 시 로고 띄우기
+$('.content_footer > a:nth-child(-n+2)').on('click', function () {
+  $('.bld').fadeIn(300);
+});
+
 $(document).ready(function() {
     setTimeout(function () {
         $('.bld').fadeOut(1500);
         setTimeout(function () {
             $('.bld').css('display', 'none');
         }, 1500);
-    }, 2000);
+    }, 500);
 });
 {% endblock %}
 

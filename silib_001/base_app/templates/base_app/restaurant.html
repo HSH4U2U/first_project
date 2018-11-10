@@ -113,6 +113,19 @@
 </div>
 {% endblock %}
 
+{% block footer %}
+<a href="{% url "base_app:all_comments" %}"><img src="{% static 'base_app/images/comment1.png' %}" width="26"></a>
+<a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/restaurant2.png' %}" width="27"></a>
+{% if user.is_authenticated %}
+  {% for restaurant in selected_restaurant %}
+  <a href="{% url "base_app:write_comment" pk=restaurant.pk %}"><img src="{% static 'base_app/images/write1.png' %}" width="27"></a>
+  {% endfor %}
+{% else %}
+  <a href="{% url "accounts:login" %}"><img src="{% static 'base_app/images/write1.png' %}" width="27"></a>
+{% endif %}
+<a href="#"><img src="{% static 'base_app/images/gear1.png' %}" width="27"></a>
+{% endblock %}
+
 {% block start_html %}
 {% endblock %}
 {% block start_js %}

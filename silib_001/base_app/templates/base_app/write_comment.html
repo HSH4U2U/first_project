@@ -1,7 +1,13 @@
 {% extends "base_app/base.html" %}
 
-{% block head_left %}
+{% block start_html %}
 {% load static %}
+<div class="bld" style="display: none">
+  <img style="margin: 0 0 20px 5px" src="{% static 'base_app/images/logo.png' %}" width="150px">
+</div>
+{% endblock %}
+
+{% block head_left %}
   <div class="main_menu">후기 작성</div>
 {% endblock %}
 
@@ -19,7 +25,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <div class="write_form_set">
-<form method='post' action='' enctype="multipart/form-data" id="comment">
+<form method='post' action='' enctype="multipart/form-data" id="comment" onsubmit="return validateForm()">
   {% csrf_token %}
   <div class="selected_restaurant">
     <div class="selected_restaurant_title">식당:</div>
@@ -84,13 +90,8 @@
 {% block footer %}
 <a href="{% url "base_app:all_comments" %}"><img src="{% static 'base_app/images/comment1.png' %}" width="26"></a>
 <a href="{% url "base_app:base" %}"><img src="{% static 'base_app/images/restaurant1.png' %}" width="27"></a>
-<a href="{% url "base_app:write_comment" pk=1 %}"><img src="{% static 'base_app/images/write2.png' %}" width="27"></a>
+<a href="#"><img src="{% static 'base_app/images/write2.png' %}" width="27"></a>
 <a href="#"><img src="{% static 'base_app/images/gear1.png' %}" width="27"></a>
-{% endblock %}
-
-{% block start_html %}
-{% endblock %}
-{% block start_js %}
 {% endblock %}
 
 {% block mapMarker %}
@@ -98,5 +99,33 @@
 
 {% block js %}
 <script>
+// 폼 입력 유효성 검증
+var form1 = $('#star_number1');
+var form2 = $('#star_number2');
+var form3 = $('#star_number3');
+var commentContent = $('#form-control3');
+var err = 0;
+
+function validate(x) {
+    if (x.prop('selectedIndex') === 0) {
+        alert("<"+ x.val() + ">" + "을 평가해주셔야합니다.");
+        err++
+    }
+}
+function over150() {
+    if (commentContent.val().length > 155) {
+        alert("후기를 150자 이내로 적어주세요(현재"+commentContent.val().length+"글자)");
+        err++
+    }
+}
+function validateForm() {
+    validate(form1);
+    validate(form2);
+    validate(form3);
+    over150();
+    if (err > 0) {
+        return false;
+    }
+}
 </script>
 {% endblock %}
