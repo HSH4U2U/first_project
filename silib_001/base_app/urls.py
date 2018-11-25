@@ -10,4 +10,7 @@ urlpatterns = [
     path('restaurant/<int:pk>', views.restaurant, name="restaurant"),
     path('all_comments', views.all_comments, name="all_comments"),
     path('restaurant/<int:pk>/write_comment', views.write_comment, name="write_comment"),
+    path('like', views.comment_like, name='comment_like'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

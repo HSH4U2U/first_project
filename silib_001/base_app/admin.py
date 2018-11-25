@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Menu, Restaurant, Comment
+from .models import Category, Menu, Restaurant, Comment, Like
 
 # Register your models here.
 @admin.register(Category)
@@ -17,3 +17,7 @@ class RestaurantAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['restaurant', 'price_star', 'taste_star', 'clean_star', 'dish_eaten', 'content', 'try_again', ]
+
+@admin.register(Like)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['user', 'comment', ]

@@ -5,6 +5,8 @@ from django.db.models import Q, Avg
 from django.contrib.auth.decorators import login_required
 import os, json
 from django.core.exceptions import ImproperlyConfigured
+from django.views.decorators.http import require_POST
+from django.http import HttpResponse
 
 # Create your views here.
 def base(request):
@@ -443,3 +445,25 @@ def write_comment(request, pk):
         'form': form,
     }
     return render(request, 'base_app/write_comment.html', ctx)
+
+
+@login_required
+@require_POST  # 해당 뷰는 POST method 만 받는다.
+def comment_like(request):
+    pk = request.POST.get('pk', None)  # ajax 통신을 통해서 template에서 POST방식으로 전달
+    comment = get_object_or_404(Comment, pk=pk)
+    comment_like, comment_like_created = comment.like_set.get_or_create(user=request.user)
+
+    if not comment_like_created:
+        comment_like.delete()
+        message = "좋아요 취소"
+    else:
+        message = "좋아요"
+
+    context = {
+        'like_count': comment.like_count,
+        'message': message
+    }
+
+    return HttpResponse(json.dumps(context), content_type="application/json")
+    # context를 json 타입으로

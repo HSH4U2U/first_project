@@ -64,8 +64,6 @@ class Restaurant(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='작성자', null=True,)   # Profile의 user와 같은 거?? 따로 부름??
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, verbose_name='해당 가게')
-
-    # TODO: 구글 평점 가져오기
     STATUS_CHOICES = (
         (4, 'A'),
         (3, 'B'),
@@ -90,9 +88,21 @@ class Comment(models.Model):
         ('절대 안 먹는다', '절대 안 먹는다'),
     )
     try_again = models.TextField(choices=STATUS_CHOICES, verbose_name='다시 먹을 지 여부', null=True, blank=True,)
+
+    like_user_set = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                           blank=True,
+                                           related_name='like_user_set',
+                                           through='Like')
+    @property
+    def like_count(self):
+        return self.like_user_set.count()
+
     # police = models.IntegerField(verbose_name='신고 수',)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
 
     class Meta:
         ordering = ['-id']
@@ -104,3 +114,10 @@ class Comment(models.Model):
     # comment 쓰고 다시 그 페이지로(그대로 따옴, 수정 필요)
     # def get_absolute_url(self):
     #     return reverse('main_app:product', args=[self.product.id])
+
+
+class Like(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='유저')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, verbose_name='해당 후기')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
